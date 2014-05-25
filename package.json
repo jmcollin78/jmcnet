@@ -1,40 +1,41 @@
 {
-    "name": "jmcnet",
-    "main": "./js/jmcnetException.js",
-    "version": "0.1.0",
-    "description": "The JMCNet library ported to JS",
-    "directories": {
-        "test": "test"
-    },
-    "scripts": {
-        "test": "grunt test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/jmcollin78/jmcnet"
-    },
-    "keywords": [
+  "name": "jmcnet",
+  "main": "./js/jmcnetException.js",
+  "version": "0.1.0",
+  "description": "The JMCNet library ported to JS",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jmcollin78/jmcnet"
+  },
+  "keywords": [
     "js",
     "library"
   ],
-    "author": "Jean-Marc Collin",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/jmcollin78/jmcnet/issues"
-    },
-    "homepage": "https://github.com/jmcollin78/jmcnet",
-    "dependencies": {
-        "grunt": "^0.4.5",
-        "lodash": "^2.4.1"
-    },
-    "devDependencies": {
-        "expect.js": "^0.3.1",
-        "grunt-contrib-jshint": "^0.10.0",
-        "grunt-contrib-watch": "^0.6.1",
-        "grunt-env": "^0.4.1",
-        "grunt-focus": "^0.1.1",
-        "grunt-mocha-test": "^0.10.2",
-        "load-grunt-tasks": "^0.4.0",
-        "mocha": "^1.19.0"
-    }
+  "author": "Jean-Marc Collin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmcollin78/jmcnet/issues"
+  },
+  "homepage": "https://github.com/jmcollin78/jmcnet",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "lodash": "^2.4.1",
+    "log4js": "^0.6.14"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-env": "^0.4.1",
+    "grunt-focus": "^0.1.1",
+    "grunt-mocha-test": "^0.10.2",
+    "load-grunt-tasks": "^0.4.0",
+    "mocha": "^1.19.0"
+  }
 }

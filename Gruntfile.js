@@ -91,7 +91,8 @@ module.exports = function(grunt) {
         },
         env: {
             test: {
-                NODE_ENV: 'test'
+                NODE_ENV: 'test',
+                LOG4JS_CONFIG : 'log4js.json'
             }
         }
     });

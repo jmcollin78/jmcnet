@@ -29,6 +29,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 expect(ex1.name).to.be(jmcnet.BASE_EXCEPTION_NAME);
                 expect(ex1.message).to.be('');
                 expect(_.isEmpty(ex1.parameters)).to.be(true);
+                expect(ex1 instanceof jmcnet.BaseException).to.be(true);
                 done();
             });
             
@@ -37,6 +38,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 expect(ex2.message).to.be('This is the message');
                 expect(_.isEmpty(ex2.parameters)).to.be(false);
                 expect(ex2.parameters).to.eql(['param1', 'param2']);
+                expect(ex2 instanceof jmcnet.BaseException).to.be(true);
                 done();
             });
             
@@ -45,6 +47,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 expect(ex3.message).to.be('This is the message');
                 expect(_.isEmpty(ex3.parameters)).to.be(false);
                 expect(ex3.parameters).to.eql(['param3']);
+                expect(ex3 instanceof jmcnet.BaseException).to.be(true);
                 done();
             });
         });
@@ -67,6 +70,8 @@ describe('<JMCNet Exception Unit Test>', function () {
                 expect(ex1.name).to.be(jmcnet.TECHNICAL_EXCEPTION_NAME);
                 expect(ex1.message).to.be('');
                 expect(_.isEmpty(ex1.parameters)).to.be(true);
+                expect(ex1 instanceof jmcnet.TechnicalException).to.be(true);
+                expect(ex1 instanceof jmcnet.BaseException).to.be(true);
                 done();
             });
 
@@ -105,6 +110,8 @@ describe('<JMCNet Exception Unit Test>', function () {
                 expect(ex1.name).to.be(jmcnet.FUNCTIONAL_EXCEPTION_NAME);
                 expect(ex1.message).to.be('');
                 expect(_.isEmpty(ex1.parameters)).to.be(true);
+                expect(ex1 instanceof jmcnet.FunctionalException).to.be(true);
+                expect(ex1 instanceof jmcnet.BaseException).to.be(true);
                 done();
             });
 

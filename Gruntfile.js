@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     // Project Configuration
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        clean: ['public/build'],
+        clean: ['public/build', 'coverage'],
         focus: {
             sources: {
                 include: ['js', 'html', 'css', 'grunt']
@@ -94,11 +94,21 @@ module.exports = function(grunt) {
                 NODE_ENV: 'test',
                 LOG4JS_CONFIG : 'log4js.json'
             }
+        },
+        exec: {
+            coverage: {
+                cmd: 'istanbul cover node_modules/mocha/bin/_mocha -- -R spec'
+            },
+            openCover : {
+                cmd : 'start coverage/lcov-report/index.html'
+            }
         }
     });
 
     //Load NPM tasks
     require('load-grunt-tasks')(grunt);
+    
+    // grunt.loadNpmTasks('grunt-exec');
 
     //Default task(s).
     if (process.env.NODE_ENV === 'production') {
@@ -109,4 +119,6 @@ module.exports = function(grunt) {
 
     //Test task.
     grunt.registerTask('testu', ['env:test', 'mochaTest', 'focus:testu']);
+    grunt.registerTask('test', ['env:test', 'mochaTest']);
+    grunt.registerTask('coverage', ['env:test', 'clean', 'exec:coverage', 'exec:openCover']);
 };

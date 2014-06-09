@@ -74,6 +74,15 @@ JMCNet Library contains those modules :
 ### Exception
 * A base module containing BaseException, FunctionalException and TechnicalException
 
+### Date manipulation
+* A module containing date functions like :
+$ jmcnet.date.getDateHourMinuteNow() : gives the current date limited to minutes informations (skip seconds and millisec),
+$ jmcnet.date.getDateNow() : gives the current date limited to date informations (skip hours, muinutes, seconds and millisec),
+$ jmcnet.date.addDays(date, nbDays) : gives back a date which is date in argument with days augmented by nbDays,
+$ jmcnet.date.addWeeks(date, nbWeeks) : gives back a date which is date in argument with weeks augmented by nbWeeks,
+$ jmcnet.date.addMonth(date, nbMonths) : gives back a date which is date in argument with month augmented by nbMonths,
+$ jmcnet.date.addMonth(date, nbYears) : gives back a date which is date in argument with year augmented by nbYears,
+
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).
 * Visit our blog informations at [Clouderial.com](http://clouderial.com/blog).

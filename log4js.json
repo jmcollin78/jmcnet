@@ -2,10 +2,10 @@
     "appenders": [
         {
             "type": "file",
-            "filename": "logs/jmcnet.log",
+            "filename": "../logs/jmcnet.log",
             "maxLogSize": 20480,
             "backups": 3,
-            "category": [ "jmcnet.exception" ]
+            "category": [ "jmcnet.exception", "jmcnet.date" ]
         },
         {
             "type": "console",

@@ -3,9 +3,9 @@
         {
             "type": "file",
             "filename": "../logs/jmcnet.log",
-            "maxLogSize": 20480,
+            "maxLogSize": 20000000,
             "backups": 3,
-            "category": [ "jmcnet.exception", "jmcnet.date" ]
+            "category": [ "jmcnet.exception", "jmcnet.date", "jmcnet.config", "jmcnet.emailTemplate" ]
         },
         {
             "type": "console",

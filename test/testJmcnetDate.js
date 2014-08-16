@@ -111,7 +111,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var d = jmcDate.addMonths(now, 1);
             log.debug('d + 1 month is "%s"', d);
             expect(d.getTime()).to.be.at.least(28 * 86400000 + now.getTime());
-            expect(d.getTime()).to.be.lessThan(31 * 86400000 + now.getTime());
+            expect(d.getTime()).to.be.at.most(31 * 86400000 + now.getTime());
             done();
         });
 

@@ -68,20 +68,34 @@ $ npm cache clean
 $ bower cache clean
 ```
 
-## Getting Started with Mean
+## Getting Started with JMCNet library
 JMCNet Library contains those modules :
 
 ### Exception
 * A base module containing BaseException, FunctionalException and TechnicalException
 
 ### Date manipulation
-* A module containing date functions like :
-$ jmcnet.date.getDateHourMinuteNow() : gives the current date limited to minutes informations (skip seconds and millisec),
-$ jmcnet.date.getDateNow() : gives the current date limited to date informations (skip hours, muinutes, seconds and millisec),
-$ jmcnet.date.addDays(date, nbDays) : gives back a date which is date in argument with days augmented by nbDays,
-$ jmcnet.date.addWeeks(date, nbWeeks) : gives back a date which is date in argument with weeks augmented by nbWeeks,
-$ jmcnet.date.addMonth(date, nbMonths) : gives back a date which is date in argument with month augmented by nbMonths,
-$ jmcnet.date.addMonth(date, nbYears) : gives back a date which is date in argument with year augmented by nbYears,
+* A module containing date helpers functions like :
+ * <b><i>jmcnet.date.getDateHourMinuteNow()</i></b> : gives the current date limited to minutes informations (skip seconds and millisec),
+ * <b><i>jmcnet.date.getDateNow()</i></b> : gives the current date limited to date informations (skip hours, muinutes, seconds and millisec),
+ * <b><i>jmcnet.date.addDays(date, nbDays)</i></b> : gives back a date which is date in argument with days augmented by nbDays,
+ * <b><i>jmcnet.date.addWeeks(date, nbWeeks)</i></b> : gives back a date which is date in argument with weeks augmented by nbWeeks,
+ * <b><i>jmcnet.date.addMonth(date, nbMonths)</i></b> : gives back a date which is date in argument with month augmented by nbMonths,
+ * <b><i>jmcnet.date.addMonth(date, nbYears)</i></b> : gives back a date which is date in argument with year augmented by nbYears,
+
+### .properties files manipulations
+* A module for dealing with configuration files in the .properties style (like in Java) with <b>automatic reload of the properties on file changes</b>
+ * <b><i>jmcnet.config.loadConfig(path, options)</i></b> : loads a set of configuration files. Path is the base directory of all configuration files. Options are the following :
+ <pre>var gOptions = {
+    // the base file containing a reference to all subfile
+    masterFileName: 'master-config.properties',
+    // when the master file or a subfile is changed, reloads all
+    reloadOnChange: true,
+    // period in second between two checks
+    checkReloadTimeSec: 10                      
+};</pre>
+ * <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
+ * <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

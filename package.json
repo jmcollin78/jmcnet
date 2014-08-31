@@ -25,7 +25,7 @@
   "homepage": "https://github.com/jmcollin78/jmcnet",
   "dependencies": {
     "grunt": "^0.4.5",
-    "java-properties": "^0.1.5",
+    "java-properties": "^0.1.7",
     "lodash": "^2.4.1",
     "log4js": "^0.6.14"
   },

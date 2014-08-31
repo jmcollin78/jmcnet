@@ -19,22 +19,26 @@ $ npm install -g grunt-cli
 
 ## Quick Install
 The quickest way to get started with JMCNet Library is to fork the Github repo.
-
+```
 $ [sudo] git fork git@github/jmcollin78/jmcnet.git
 $ cd jmcnet
 $ npm install
+```
 
 We recommend using [Grunt](https://github.com/gruntjs/grunt-cli) to start the test :
-
+```
 $ grunt testu
+```
 
 If grunt aborts because of JSHINT errors, these can be overridden with the `force` flag:
-
+```
 $ grunt -f testu
+```
 
 Alternatively, when not using `grunt` you can run:
-
+```
 $ node test
+```
 
 ## Troubleshooting
 During install some of you may encounter some issues.
@@ -86,14 +90,15 @@ JMCNet Library contains those modules :
 ### .properties files manipulations
 * A module for dealing with configuration files in the .properties style (like in Java) with <b>automatic reload of the properties on file changes</b>
  * <b><i>jmcnet.config.loadConfig(path, options)</i></b> : loads a set of configuration files. Path is the base directory of all configuration files. Options are the following :
- <pre>var gOptions = {
+ ```
     // the base file containing a reference to all subfile
     masterFileName: 'master-config.properties',
     // when the master file or a subfile is changed, reloads all
     reloadOnChange: true,
     // period in second between two checks
     checkReloadTimeSec: 10                      
-};</pre>
+```
+
  * <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
  * <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
 

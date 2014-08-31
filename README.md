@@ -101,6 +101,7 @@ JMCNet Library contains those modules :
 
  * <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
  * <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
+ * <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

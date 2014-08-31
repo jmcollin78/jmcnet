@@ -148,4 +148,46 @@ describe('<JMCNet Config Unit Test>', function () {
             // done();
         });
     });
+    describe('check calling listener after a subfile modification', function () {
+        var nbListenerCall=0;
+        var incListenerCall=function() { nbListenerCall++;};
+        
+        before(function(done) {
+            fs.writeFileSync('./test/config/master3.properties','subfile.1=subdir/subfile1.properties\nsubfile.2=subfile3.properties');
+            fs.writeFile('./test/config/subfile3.properties','subfile3.value=my value', done);
+        });
+        it('should call the listener after a subfile change', function (done) {
+            
+            log.debug('Test calling the listener after a subfile modification');
+            try {
+                jmcnetConfig.loadConfig('./test/config/', {
+                    masterFileName: 'master3.properties',
+                    reloadOnChange: true,
+                    checkReloadTimeSec: 1 // one second between 2 checks
+                });
+                expect(nbListenerCall).to.equal(0);
+                jmcnetConfig.addListener(incListenerCall);
+            } catch (err) {
+                log.error('Error is "%s"', err.message);
+                assert.fail('We should not be there');
+            }
+            log.trace('Get subfile3.value');
+            expect(jmcnetConfig.get('subfile3.value')).to.equal('my value');
+            setTimeout(function() {
+                log.trace('Modifying the value of subfile3.value properties');
+                fs.writeFile('./test/config/subfile3.properties','subfile3.value=${sub1.value1}/my value', function (err) {
+                    if (err) throw err;
+                    // check must be true now
+                    expect(jmcnetConfig.get('subfile3.value')).to.equal('value 1/my value');
+                    expect(nbListenerCall).to.equal(1);
+                    done();
+                });
+                } , 1100);
+        });
+        after(function(done) {
+            fs.unlinkSync('./test/config/master3.properties');
+            fs.unlink('./test/config/subfile3.properties', done);
+            // done();
+        });
+    });
 });

@@ -31,6 +31,8 @@ var gDir='.';
 
 var gFiles = [];
 
+var gListeners=[];
+
 /**
  * Loads a set of config files. This method first loads a master property file which contains a list of properties which values are the file path to load (relative to the dir directory in first argument).
  * Available options are the following :
@@ -74,6 +76,11 @@ function loadConfig(dir, options) {
         gConfig = config;
         gTimeLastCheck = Math.floor((new Date()).getTime() / 1000);
         gTimeNextCheck = gTimeLastCheck + gOptions.checkReloadTimeSec;
+        // call all listeners
+        gListeners.forEach(function(cb) {
+            log.trace('Calling listener : %s', cb);
+            cb();
+        });
     }
 }
 
@@ -118,7 +125,7 @@ function getOptions() {
 }
 
 function get(key) {
-    if (checkFileChanges) {
+    if (checkFileChanges()) {
         log.info('We must reload the config');
         loadConfig(gDir, gOptions);
     }
@@ -127,11 +134,14 @@ function get(key) {
 
 function getKeys() { return gConfig.getKeys(); }
 
+function addListener(callback) { gListeners.push(callback); }
+
 module.exports = {
     loadConfig: loadConfig,
     getConfig : getConfig,
     getKeys: getKeys,
     get : get,
     getOptions: getOptions,
-    checkFileChanges : checkFileChanges
+    checkFileChanges : checkFileChanges,
+    addListener : addListener
 };

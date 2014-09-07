@@ -46,9 +46,46 @@ EmailTemplate.prototype.renderSubject = function (context, lang) {
     if (lang) gLang = lang;
     return this.subjectCompile(context);
 };
+
+/**
+ * Renders the body template for an EmailTemplate
+ * @param context an object describing the context
+ * @param lang fr|en
+ * @return the String containing the rendered subject
+ */
 EmailTemplate.prototype.renderBody = function (context, lang) {
     if (lang) gLang = lang;
     return this.bodyCompile(context);
+};
+
+/**
+ * Send an email using this EmailTemplate and a context.
+ * @param email an jmcnetEmail.Email object initialized with from, to and others fields
+ * @param context an object storing the context (list of key : value),
+ * @param lang 'fr' or 'en',
+ * @param cb the callback function once email has been send. This callback takes err and info in arguments
+ */
+EmailTemplate.prototype.sendEmail = function(email, context, lang, cb) {
+    log.trace('Sending the email "%" with template "%s", context "%s" and lang="%s"', util.inspect(email), util.inspect(this), util.inspect(context), lang);
+    email.subject = this.renderSubject(context, lang);
+    email.html = this.renderBody(context, lang);
+    email.sendEmail(cb);
+};
+
+/**
+ * Send an email using this EmailTemplate and a context but do a 2nd pass.
+ * @param email an jmcnetEmail.Email object initialized with from, to and others fields
+ * @param context an object storing the context (list of key : value),
+ * @param lang 'fr' or 'en',
+ * @param cb the callback function once email has been send. This callback takes err and info in arguments
+ */
+EmailTemplate.prototype.sendEmail2Pass = function(email, context, lang, cb) {
+    log.trace('Sending the email "%" with template "%s", context "%s" and lang="%s" with 2 pass', util.inspect(email), util.inspect(this), util.inspect(context), lang);
+    var tmp = this.renderSubject(context, lang);
+    email.subject = ejs.render(tmp, context);
+    tmp = this.renderBody(context, lang);
+    email.html = ejs.render(tmp, context);
+    email.sendEmail(cb);
 };
 
 function getEmailTemplate(templateName) {

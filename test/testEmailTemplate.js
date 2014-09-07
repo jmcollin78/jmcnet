@@ -10,7 +10,7 @@
 var expect = require('chai').expect; // jshint ignore:line
 var assert = require('assert'); // jshint ignore:line
 var log = require('log4js').getLogger('jmcnet.emailTemplate'),
-    // jmcnetException = require('../js/jmcnetException.js'),
+    jmcnetEmail = require('../js/jmcnetEmail.js'),
     jmcnetEmailTemplate = require('../js/jmcnetEmailTemplate.js'),
     util = require('util');
 
@@ -53,8 +53,14 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
             log.debug('Test Render subject');
             var subject, body;
             try {
-				subject = tpl.renderSubject({ title : 'This is the title of the mail', body : 'This is the body of the mail' });
-                body = tpl.renderBody({ title : 'This is the title of the mail', body : 'This is the body of the mail' });
+                subject = tpl.renderSubject({
+                    title: 'This is the title of the mail',
+                    body: 'This is the body of the mail'
+                });
+                body = tpl.renderBody({
+                    title: 'This is the title of the mail',
+                    body: 'This is the body of the mail'
+                });
                 expect(subject).to.equal('subject This is the title of the mail');
                 expect(body).to.equal('body This is the body of the mail');
             } catch (err) {
@@ -63,7 +69,7 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
             done();
         });
     });
-    
+
     describe('Loading a template from a file :', function () {
         before(function (done) {
             jmcnetEmailTemplate.resetEmailTemplates();
@@ -75,18 +81,24 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
             try {
                 var tpl = jmcnetEmailTemplate.loadEmailTemplateFromFile('template1', 'subject <%= title %>', 'test/emailTemplates/template1.html');
                 log.debug('tpl is "%s"', util.inspect(tpl));
-            
-				subject = tpl.renderSubject({ title : 'This is the title of the mail', body : 'This is the body of the mail' });
-                body = tpl.renderBody({ title : 'This is the title of the mail', body : 'This is the body of the mail' });
+
+                subject = tpl.renderSubject({
+                    title: 'This is the title of the mail',
+                    body: 'This is the body of the mail'
+                });
+                body = tpl.renderBody({
+                    title: 'This is the title of the mail',
+                    body: 'This is the body of the mail'
+                });
                 expect(subject).to.equal('subject This is the title of the mail');
                 expect(body).to.equal('<html>This is the body of the mail</html>');
             } catch (err) {
-                assert.fail('we should not be there err='+err.message);
+                assert.fail('we should not be there err=' + err.message);
             }
             done();
         });
     });
-    
+
     describe('Rendering a Date in locale String :', function () {
         var tpl;
         before(function (done) {
@@ -98,19 +110,78 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
             log.debug('Test Render subject with date');
             var subject;
             var d = new Date(Date.parse('2014-08-31'));
-            subject = tpl.renderSubject({ date : d, body : 'This is the body of the mail' });
+            subject = tpl.renderSubject({
+                date: d,
+                body: 'This is the body of the mail'
+            });
             expect(subject).to.equal('The date is 31/08/2014');
-            subject = tpl.renderSubject({ date : d, body : 'This is the body of the mail' }, 'fr');
+            subject = tpl.renderSubject({
+                date: d,
+                body: 'This is the body of the mail'
+            }, 'fr');
             expect(subject).to.equal('The date is 31/08/2014');
-                subject = tpl.renderSubject({ date : d, body : 'This is the body of the mail' }, 'en');
+            subject = tpl.renderSubject({
+                date: d,
+                body: 'This is the body of the mail'
+            }, 'en');
             expect(subject).to.equal('The date is 08/31/2014');
             done();
         });
     });
 
-
     after(function (done) {
         // TODO do some after exit clean
         done();
+    });
+});
+
+// Send a real email. Put some real informations in the fields below to test and remonve the .skip after describe
+var smtpServer = 'smtp.xxx.xxx';
+var port = 465;
+var login = 'xxxx';
+var pwd = 'xxxx';
+var from = 'xxxx@xxx.com';
+var to = ['xxxx@xxxx.com', 'yyyy@yyyy.com' ];
+describe.skip(' < JMCNet Email Template Integration Test > ', function () {
+    var email, template;
+    before(function (done) {
+        email = new jmcnetEmail.Email(from, to);
+        jmcnetEmail.setSmtpTransport(smtpServer, port, login, pwd, 60000);
+        jmcnetEmailTemplate.resetEmailTemplates();
+        template = jmcnetEmailTemplate.loadEmailTemplateFromFile('realTemplate ', '[\u2601 Testu] Création d\'un compte', 'test/emailTemplates/realTemplate.html');
+        done();
+    });
+    
+    describe('Creating and sending an real email on a real smtp server from a real template', function () {
+        it('should be possible to send a real email on a real smtp server from a real template', function (done) {
+            expect(email).to.exist;
+            expect(template).to.exist;
+            this.timeout(60000);
+            var context={
+                mail_commons_header : 'Vous recevez cet e-mail car vous êtes utilisateur CLOUDerial.',
+                headerH1 : 'Création d\'un compte',
+                messageCoreHtml : 'Vous venez de créer un compte sur Clouderial.com.<br/>Pour <span style="font-weight:bold; font-size:125%; background-color:yellow;"><a href="<%=urlActivateAccount%>">finaliser votre inscription, cliquez ici</a></span>.<br/>Vous pourrez ensuite personnaliser votre mot de passe.<br/>Vos informations :<br/><ul><li>login : <%=account.email%></li><li>pseudo : <%=account.pseudo%></li><li>mot de passe temporaire : <%=password%></li></ul><br/>Une fois votre compte activé, votre espace client sera accessible en cliquant <a href="<%=urlAccountApp%>">ici</a>.',
+                mail_commons_signature : 'Merci de votre confiance.<p>L\'équipe Clouderial.</p>',
+                mailConditions : '<p><u>Conditions d\'utilisation :</u></p><p>Cette inscription est gratuite. Vous bénéficiez d\'un accès complet à toutes les fonctions proposées par <a href="http://www.clouderial.com">Clouderial.com</a> à concurrence de 25 objets partageables. En cas de dépassement, votre compte restera gratuit mais aura un accès limité ne lecture seule.</p>',
+                mail_commons_footer_msg1 : 'CLOUDerial est une marque déposée de CLOUDERIAL SAS',
+                mail_commons_footer_msg2 : 'CLOUDerial SAS - 13 rue des acacias - 78650 BEYNES',
+                mail_commons_footer_msg3 : 'SAS au capital de 9000 € - 790 998 553 RCS de Versailles',
+                urlActivateAccount : 'http://clouderial.com/activate-account.html?id=A4012',
+                account : {
+                    email : 'test@testu.com',
+                    pseudo : 'The test man'
+                    
+                },
+                password : 'hyXPyDKx',
+                urlAccountApp : 'http://clouderial.com/account-web'
+            };
+            jmcnetEmail.setBaseImgDir('./test/emailTemplates/images');
+//            jmcnetEmail.setBaseImgDir('http://clouderial.com/templates/images/');
+            template.sendEmail2Pass(email, context, 'fr', function (err, info) {
+                log.trace('Send real Email on a real smtp server return. Err="%s", info="%s"', err, util.inspect(info));
+                expect(err).to.not.exist;
+                done();
+            });
+        });
     });
 });

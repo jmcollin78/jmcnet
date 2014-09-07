@@ -68,7 +68,7 @@ describe('<JMCNet Email Unit Test>', function () {
             done();
         });
     });
-    describe.only('Twice substitute does nothing template Test :', function () {
+    describe('Twice substitute does nothing template Test :', function () {
         before(function (done) {
             email = new Email('from@test.com', 'to@test.com', 'My subject string', 'My text string', '<html>My html string with an image : <img src="./images/test.png"></img></html>');
             done();

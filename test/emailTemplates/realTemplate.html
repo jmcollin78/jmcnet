@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<style type="text/css">
+		@font-face {
+		  font-family: 'Corben';
+		  font-style: normal;
+		  font-weight: 400;
+		  src: local("Corben Regular"), local("Corben-Regular"), url(https://themes.googleusercontent.com/static/fonts/corben/v5/aTjzBnce-6l9sMpae8_abg.woff) format("woff");
+		}
+		
+		body {
+			background-color : #eef8ff;
+		}
+		
+		table, tr, td, img {
+			margin : 0;
+			padding : 0;
+		}
+		
+		.citation {
+			background-color : #ccc; border-top : 1px solid black; border-left : 1px solid darkgray; padding : 3px;
+			font-family : "Courier New", Courier, monospace;
+			white-space : pre-wrap;
+		}
+		
+		.pageTitle {
+			color: #444444;
+			line-height: 24px;
+			height: 90px;
+			padding-top: 33px;
+			box-sizing: border-box;
+			background-color : white;
+		}
+		
+		h1 {
+			color : #444444;
+			font-size:20px;
+			font-family : "Corben", arial;
+			line-height:30px;
+		}
+		
+		a {
+			color : #e52222;
+		}
+		
+		a:hover {
+			text-decoration : underline;
+		}
+	</style>
+</head>
+<body style="background-color : #eef8ff; margin : 0; padding : 0; font-family: 'Georgia'; font-size : 15px; font-weight: normal; width:100%;">
+	
+	<div style="margin : 0 auto; width:555px; text-align: center;">
+		<p style="font-family: 'Corben'; font-size: 10px; color : #41627C;  width:100%; text-align: center;"><%=mail_commons_header%></p>
+		<div id="header" style="height: 270px; width : 100%;">
+			<a href="http://clouderial.com/"><img src="email-header-red.png"/></a>
+		</div>
+		<br/>
+		<div id="container" style="width : 100%; margin : 0 auto;">
+			<table style="width : 555px; border-collapse: collapse; margin: 0; padding: 0; border-spacing: 0;" cellpadding="0" cellspacing="0">
+				<tr style="background-color:#e52222; height:8px; width:100%;">
+					<td colspan="3"></td>
+				</tr>
+				<tr class="pageTitle">
+					<td><img src="red-message.png"></img></td>
+					<td colspan="2"><h1 style="font-family : arial; color : #444;"><%=headerH1%></h1></td>
+				</tr>
+				<tr style="line-height: 0px;">
+					<td style="background-color: #fff; width:20px;"></td>
+					<td style="text-align: left; background-color: #ffffff; width:515px; font-family: 'Corben' arial; font-size: 15px; color : #444; line-height: 17px;">
+						<%-messageCoreHtml%>
+						<br/><br/>
+						<hr width="50%"/>
+						<%if (locals.mailSignature) { %>
+							<%-mailSignature%>
+						<% } else { %>
+							<%-mail_commons_signature%>
+						<% } %>
+					</td>
+					<td style="background-color: #fff; width:20px;"></td>
+				</tr>				
+				<tr style="height: 20px; background-color: #fff;">
+					<td colspan="3"></td>
+				</tr>
+				
+			</table>
+			<%if (locals.mailConditions) {%>
+			<table style="font-family: 'Corben'; font-size: 12px; color : #41627C; width:555px; text-align: left;">
+				<tr><td><%-mailConditions%></td></tr>
+			</table>
+			<br/>
+			<%}%>
+		</div>
+		<hr/>
+		<div style="width: 100%; margin : 0 auto; font-size: 10px; color : #41627C; text-align:center;">
+				<p><%=mail_commons_footer_msg1%><br/><%=mail_commons_footer_msg2%><br/><%=mail_commons_footer_msg3%></p>
+		</div>
+	</div>
+</body>
+</html>

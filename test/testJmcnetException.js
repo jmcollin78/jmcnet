@@ -66,7 +66,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 ex3 = new jmcnet.TechnicalException('This is the message', 'param3');
                 done();
             });
-            it('should have a default base exception', function (done) {
+            it('should have a default Technical exception', function (done) {
                 expect(ex1.name).to.be(jmcnet.TECHNICAL_EXCEPTION_NAME);
                 expect(ex1.message).to.be('');
                 expect(_.isEmpty(ex1.parameters)).to.be(true);
@@ -75,7 +75,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 done();
             });
 
-            it('should have a base exception with message and parameters', function (done) {
+            it('should have a Technical exception with message and parameters', function (done) {
                 expect(ex2.name).to.be(jmcnet.TECHNICAL_EXCEPTION_NAME);
                 expect(ex2.message).to.be('This is the message');
                 expect(_.isEmpty(ex2.parameters)).to.be(false);
@@ -83,7 +83,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 done();
             });
             
-            it('should have a base exception with message and one parameter', function (done) {
+            it('should have a Technical exception with message and one parameter', function (done) {
                 expect(ex3.name).to.be(jmcnet.TECHNICAL_EXCEPTION_NAME);
                 expect(ex3.message).to.be('This is the message');
                 expect(_.isEmpty(ex3.parameters)).to.be(false);
@@ -106,7 +106,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 ex3 = new jmcnet.FunctionalException('This is the message', 'param3');
                 done();
             });
-            it('should have a default base exception', function (done) {
+            it('should have a default Functional exception', function (done) {
                 expect(ex1.name).to.be(jmcnet.FUNCTIONAL_EXCEPTION_NAME);
                 expect(ex1.message).to.be('');
                 expect(_.isEmpty(ex1.parameters)).to.be(true);
@@ -115,7 +115,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 done();
             });
 
-            it('should have a base exception with message and parameters', function (done) {
+            it('should have a Functional exception with message and parameters', function (done) {
                 expect(ex2.name).to.be(jmcnet.FUNCTIONAL_EXCEPTION_NAME);
                 expect(ex2.message).to.be('This is the message');
                 expect(_.isEmpty(ex2.parameters)).to.be(false);
@@ -123,7 +123,7 @@ describe('<JMCNet Exception Unit Test>', function () {
                 done();
             });
 
-            it('should have a base exception with message and one parameter', function (done) {
+            it('should have a Functional exception with message and one parameter', function (done) {
                 expect(ex3.name).to.be(jmcnet.FUNCTIONAL_EXCEPTION_NAME);
                 expect(ex3.message).to.be('This is the message');
                 expect(_.isEmpty(ex3.parameters)).to.be(false);

@@ -57,12 +57,12 @@ describe('<JMCNet Email Unit Test>', function () {
 });
 
 // Send a real email. Put some real informations in the fields below to test and remonve the .skip after describe
-var smtpServer = 'smtp.laposte.net';
+var smtpServer = 'smtp.xxx';
 var port = 465;
-var login = 'jm.collin@laposte.net';
-var pwd = 'schwp3v5';
-var from='jm.collin@laposte.com';
-var to='jm.collin@laposte.com';
+var login = '';
+var pwd = '';
+var from='';
+var to='';
 describe.only('<JMCNet Email Integration Test>', function () {
     var email;
     before(function (done) {

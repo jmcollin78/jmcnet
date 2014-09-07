@@ -7,7 +7,7 @@
 var
 // _ = require('lodash'),
     nodemailer = require('nodemailer'),
-    smtpTransport = require('nodemailer-smtp-transport'),
+    // smtpTransport = require('nodemailer-smtp-transport'),
     log = require('log4js').getLogger('jmcnet.email'),
     util = require('util'),
     jmcnetException = require('../js/jmcnetException.js');
@@ -30,10 +30,10 @@ Email.prototype.sendEmail = function (cb) {
         log.error(exc);
         throw exc;
     }
-    
+
     if (gBaseImgDir) {
         log.trace('Substituing all image path on the html by cid:xxx');
-                  
+
     }
 
     return gTransporter.sendMail(this, cb);
@@ -53,20 +53,21 @@ FakeTransport.prototype.sendMail = function (emailProps, cb) {
     }
 };
 
-var setSmtpTransport = function (smtpServerName, port, login, password, timeout) {
+var setSmtpTransport = function (smtpServerName, port, login, password, timeout, secure) {
     log.trace('Setting smtpTransport');
     if (!timeout) timeout = 5000;
-    gTransporter = nodemailer.createTransport(smtpTransport({
+    if (!secure) secure = true;
+    gTransporter = nodemailer.createTransport({
         port: port,
         host: smtpServerName,
-        secure: true,
+        secure: secure,
         auth: {
             user: login,
             pass: password
         },
         connectionTimeout: timeout,
-        debug: true
-    }));
+        debug: false
+    });
 };
 
 module.exports = {

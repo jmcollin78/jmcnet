@@ -15,7 +15,7 @@ var log = require('log4js').getLogger('jmcnet.emailTemplate'),
     util = require('util');
 
 // The tests
-describe.only('<JMCNet EmailTemplate Unit Test>', function () {
+describe('<JMCNet EmailTemplate Unit Test>', function () {
     before(function (done) {
         jmcnetEmailTemplate.resetEmailTemplates();
         done();

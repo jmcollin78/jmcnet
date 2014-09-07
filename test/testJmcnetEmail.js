@@ -68,6 +68,21 @@ describe('<JMCNet Email Unit Test>', function () {
             done();
         });
     });
+    describe.only('Twice substitute does nothing template Test :', function () {
+        before(function (done) {
+            email = new Email('from@test.com', 'to@test.com', 'My subject string', 'My text string', '<html>My html string with an image : <img src="./images/test.png"></img></html>');
+            done();
+        });
+        it('should be possible to twice replace img src by attachments', function (done) {
+            log.debug('Test replacing img src by attachments');
+            email.createImageAttachmentFromHtml('./test/');
+            email.createImageAttachmentFromHtml('./test/');
+            expect(email.html).to.equal('<html>My html string with an image : <img src="cid:img0"></img></html>');
+            expect(email.attachments).to.have.length(1);
+            expect(email.attachments[0].path).to.equal('./test/./images/test.png');
+            done();
+        });
+    });
 });
 
 // Send a real email. Put some real informations in the fields below to test and remonve the .skip after describe

@@ -70,10 +70,16 @@ Email.prototype.createImageAttachmentFromHtml = function(baseImgDir) {
     var mail = this;
     function imgReplacer(match, p0, p1, offset, string) {
         log.trace('Calling createImageAttachmentFromHtml.replacer with "%s", "%s", "%s", "%s"', match, p1, offset, string);
-        var cidName='img'+cid;
-        mail.addAttachment(p1, gBaseImgDir+'/'+p1, cidName);
-        cid++;
-        return '<img'+p0+'src="cid:'+cidName+'"';
+        if (p1.indexOf('cid:') === 0) { // ie startsWith cid:
+            log.trace('Replacement is already done');
+            return '<img'+p0+'src="'+p1+'"';
+        }
+        else {
+            var cidName='img'+cid;
+            mail.addAttachment(p1, gBaseImgDir+'/'+p1, cidName);
+            cid++;
+            return '<img'+p0+'src="cid:'+cidName+'"';
+        }
     }
     
     function urlReplacer(match, p1, offset, string) {

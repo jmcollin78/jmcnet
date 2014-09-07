@@ -28,7 +28,9 @@
     "grunt": "^0.4.5",
     "java-properties": "^0.1.7",
     "lodash": "^2.4.1",
-    "log4js": "^0.6.14"
+    "log4js": "^0.6.14",
+    "nodemailer": "^1.2.1",
+    "nodemailer-smtp-transport": "^0.1.12"
   },
   "devDependencies": {
     "chai": "^1.9.1",

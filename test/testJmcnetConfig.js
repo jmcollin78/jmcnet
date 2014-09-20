@@ -212,4 +212,30 @@ describe('<JMCNet Config Unit Test>', function () {
             // done();
         });
     });
+    describe('check default value', function() {
+        before(function(done) {
+            log.trace('\n\n-----------------------------------\n\n');
+            jmcnetConfig.loadConfig('./test/config/');
+            done();
+        });
+        it('should get a default value when key does not exists', function() {
+            expect(jmcnetConfig.get('sub1.value1.dontExists','defaultValue')).to.equal('defaultValue');
+            expect(jmcnetConfig.get('sub1.value1.dontExists')).to.not.exist;
+            // normal value with default
+            expect(jmcnetConfig.get('sub1.value2','defaultValue')).to.equal('value 2/sub1');
+        });
+    });
+    describe('check int value', function() {
+        before(function(done) {
+            log.trace('\n\n-----------------------------------\n\n');
+            jmcnetConfig.loadConfig('./test/config/');
+            done();
+        });
+        it('should get a int value', function() {
+            expect(jmcnetConfig.getInt('sub1.value1.dontExists')).to.not.exist;
+            expect(jmcnetConfig.getInt('sub1.value1.dontExists',12)).to.equal(12);
+            expect(jmcnetConfig.getInt('sub2.int.value')).to.equal(14);
+            expect(jmcnetConfig.getInt('sub2.int.value', 12)).to.equal(14);
+        });
+    });
 });

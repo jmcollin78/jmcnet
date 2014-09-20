@@ -22,11 +22,14 @@ var gTimeNextCheck = 0;
  * - checkReloadTimeSec : period in second for checking if one of the file has been changed
  */
 var MASTER_CONFIG_FILE = 'master-config.properties';
-var gOptions = {
+var gDefaultOptions = {
     masterFileName: MASTER_CONFIG_FILE,
     reloadOnChange: true,
     checkReloadTimeSec: 10
 };
+
+var gOptions;
+
 var gDir='.';
 
 var gFiles = [];
@@ -44,7 +47,7 @@ var gListeners=[];
  */
 function loadConfig(dir, options) {
     if (!options) options = {};
-    gOptions = _.defaults(options, gOptions);
+    gOptions = _.defaults(options, gDefaultOptions);
 
     log.trace('Loading config from dir "%s" with options "%s"', dir, util.inspect(gOptions));
     gDir = dir;
@@ -127,12 +130,18 @@ function getOptions() {
     return gOptions;
 }
 
-function get(key) {
+function get(key, defaultValue) {
     if (checkFileChanges()) {
         log.info('We must reload the config');
         loadConfig(gDir, gOptions);
     }
-    return gConfig.get(key);
+    var val = gConfig.get(key);
+    return val ? val : defaultValue;
+}
+
+function getInt(key, defaultValue) {
+    var val = get(key, defaultValue);
+    return val ? parseInt(get(key, defaultValue)):undefined;
 }
 
 function getKeys() { return gConfig.getKeys(); }
@@ -144,6 +153,7 @@ module.exports = {
     getConfig : getConfig,
     getKeys: getKeys,
     get : get,
+    getInt : getInt,
     getOptions: getOptions,
     checkFileChanges : checkFileChanges,
     addListener : addListener

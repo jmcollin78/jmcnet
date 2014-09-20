@@ -39,10 +39,29 @@ describe('<JMCNet Email Unit Test>', function () {
             done();
         });
         it('should be possible to send email with a fake transport', function (done) {
-            log.debug('Test send with a transport');
-            jmcnetEmail.setFakeTransport();
+            log.debug('Test send with a fake transport');
+            var fkTp = jmcnetEmail.setFakeTransport();
+            log.debug('FakeTransport is "%s" sentEmails="%s"', util.inspect(fkTp), util.inspect(fkTp.sentEmails));
+            expect(fkTp).to.exist;
+            expect(fkTp.sentEmails).to.have.length(0);
             expect(email.sendEmail).to.not.throw(Error);
             done();
+        });
+        it('should be possible to get back the sent mail with FakeTransport', function (done) {
+            log.debug('Test send with a fake transport and get back the sent mail');
+            var fkTp = jmcnetEmail.setFakeTransport();
+            email.sendEmail(function () {
+                expect(fkTp.sentEmails).to.have.length(1);
+                var sentEmail = fkTp.sentEmails[0];
+                log.debug('SentEmail="%"', util.inspect(sentEmail));
+                expect(sentEmail.from).to.equal(email.from);
+                expect(sentEmail.to).to.equal(email.to);
+                expect(sentEmail.subject).to.equal(email.subject);
+                // reseting the sent maile
+                fkTp.resetSentEmails();
+                expect(fkTp.sentEmails).to.have.length(0);
+                done();
+            });
         });
         it('should have an error when sending email to a false smtp server', function (done) {
             log.debug('Test send with a false transport');

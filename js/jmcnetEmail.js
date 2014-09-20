@@ -95,10 +95,11 @@ Email.prototype.createImageAttachmentFromHtml = function(baseImgDir) {
 };
 
 function FakeTransport() {
-    this.sentEmails = [];
+    this.resetSentEmails();
 }
 
 FakeTransport.prototype.sendMail = function (emailProps, cb) {
+    log.trace('Sending email "%s" to fakeTransport', util.inspect(emailProps));
     this.sentEmails.push(emailProps);
     if (cb) {
         cb(null, {
@@ -106,6 +107,10 @@ FakeTransport.prototype.sendMail = function (emailProps, cb) {
             response: 'Email send successfully to fake transport'
         }); // the info structure
     }
+};
+
+FakeTransport.prototype.resetSentEmails = function() {
+    this.sentEmails = [];
 };
 
 var setSmtpTransport = function (smtpServerName, port, login, password, timeout, secure) {
@@ -129,6 +134,7 @@ module.exports = {
     setSmtpTransport: setSmtpTransport,
     setFakeTransport: function () {
         gTransporter = new FakeTransport();
+        return gTransporter;
     },
     Email: Email,
     setBaseImgDir: function (baseImgDir) {

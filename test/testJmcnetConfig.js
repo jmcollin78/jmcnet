@@ -47,6 +47,24 @@ describe('<JMCNet Config Unit Test>', function () {
             done();
         });
     });
+    describe('loadConfig with a config file (without trailing / at the end of the name)', function () {
+        it('should be possible to load a config file without a trailing /', function (done) {
+            log.debug('Test loadConfig OK');
+            try {
+                jmcnetConfig.loadConfig('./test/config');
+            } catch (err) {
+                log.error('Error is "%s"', err.message);
+                assert.fail('We should not be there');
+            }
+            log.debug('Config is now : %s', util.inspect(jmcnetConfig.getKeys()));
+            expect(jmcnetConfig.getKeys()).to.be.not.empty;
+            expect(jmcnetConfig.get('sub1.value1')).to.equal('value 1');
+            expect(jmcnetConfig.get('sub1.value2')).to.equal('value 2/sub1');
+            expect(jmcnetConfig.get('sub2.value1')).to.equal('value 2');
+            expect(jmcnetConfig.get('sub2.value2')).to.equal('value 1/sub2');
+            done();
+        });
+    });
     describe('loadConfig with options', function () {
         it('should be possible to load a config file with non default options', function (done) {
             log.debug('Test loadConfig with options OK');

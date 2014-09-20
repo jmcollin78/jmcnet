@@ -48,6 +48,9 @@ function loadConfig(dir, options) {
 
     log.trace('Loading config from dir "%s" with options "%s"', dir, util.inspect(gOptions));
     gDir = dir;
+    // add trailing / if not already set
+    if (! _.endsWith(gDir, '/')) gDir += '/';
+    
     // check if the master file is present
     var masterConfigFilePath = gDir + options.masterFileName;
     var stats = null;

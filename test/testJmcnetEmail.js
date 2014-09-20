@@ -46,9 +46,10 @@ describe('<JMCNet Email Unit Test>', function () {
         });
         it('should have an error when sending email to a false smtp server', function (done) {
             log.debug('Test send with a false transport');
-            jmcnetEmail.setSmtpTransport('127.0.0.1', 25, 'login', 'password', 250);
+            // false smtp server transport
+            jmcnetEmail.setSmtpTransport('google.com', 18, 'login', 'password', 250);
             email.sendEmail(function (err, info) {
-                log.trace('Send Email return. Err="%s", info="%s"', err, util.inspect(info));
+                log.trace('Send Email return. Err="%s", info="%s"', util.inspect(err), util.inspect(info));
                 expect(err).to.exist;
                 done();
             });

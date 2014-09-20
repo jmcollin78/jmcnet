@@ -108,10 +108,14 @@ describe('<JMCNet Config Unit Test>', function () {
             // just after loading check is false
             expect(jmcnetConfig.checkFileChanges()).to.be.false;
             log.trace('Touching the master file');
-            fs.appendFile('./test/config/master2.properties', ' ', function (err) {
+            var fileName='./test/config/master2.properties';
+            var stats = fs.statSync(fileName);
+            fs.appendFile(fileName, ' ', function (err) {
                 if (err) throw err;
                 // check must be true now
                 expect(jmcnetConfig.checkFileChanges()).to.be.true;
+                // remove the last blank
+                fs.truncateSync(fileName, stats.size);
                 done();
             });
         });

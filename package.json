@@ -1,13 +1,13 @@
 {
   "name": "jmcnet",
   "main": "./js/jmcnet.js",
-  "version": "0.1.0",
-  "description": "The JMCNet library ported to JS",
+  "version": "1.0.0",
+  "description": "The JMCNet library ported to JS : send email, manage html email template, use .properties files and add some usefull date methods",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt testu"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,8 @@
   },
   "keywords": [
     "js",
-    "library"
+    "library",
+      "email", "template", "date", "exception", "properties", "property"
   ],
   "author": "Jean-Marc Collin",
   "license": "MIT",

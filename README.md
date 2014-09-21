@@ -176,38 +176,38 @@ email.sendEmail(function (err, info) {
 
 ### Email templating features (jmcnet-emailTemplate)
 This module provides very easy features to send beautiful html email based on template.
+
 * <b><i>Creates a template from Strings</i></b>
-```
-var EmailTemplate = jmcnet.emailTemplate.EmailTemplate;
-var template = new EmailTemplate(
+ ```
+ var EmailTemplate = jmcnet.emailTemplate.EmailTemplate;
+ var template = new EmailTemplate(
         'templateName',
         'The subject of the mail with <%= user.lastname %>',
         '<html>The email templated body <%= user.firstname %></html>');
 
-```
+ ```
 * <b><i>Loads a template from a file</i></b>
-
-```
-var template = jmcnet.emailTemplate.loadEmailTemplateFromFile(
+ ```
+ var template = jmcnet.emailTemplate.loadEmailTemplateFromFile(
         'templateName',
         'subject <%= title %>',
         '/path/to/template/file.html');
-```
+ ```
 * <b><i>Retrieve a previously loaded template</i></b>
-```
-jmcnet.emailTemplate.getLstTemplates(); // list all templates
-var template = jmcnet.emailTemplate.getEmailTemplate('templateName');
-```
+ ```
+ jmcnet.emailTemplate.getLstTemplates(); // list all templates
+ var template = jmcnet.emailTemplate.getEmailTemplate('templateName');
+ ```
 * <b><i>Reset all loaded templates</i></b>
-```
-jmcnet.emailTemplate.resetEmailTemplates();
-```
+ ```
+ jmcnet.emailTemplate.resetEmailTemplates();
+ ```
 * <b><i>Sends a templated email</i></b>
-```
-email = new Email(from, to);
-jmcnet.email.setSmtpTransport(smtpServer, port, login, pwd, 60000);
-template = jmcnet.emailTemplate.loadEmailTemplateFromFile('realTemplate ', '[\u2601 Testu] Création d\'un compte', 'test/emailTemplates/realTemplate.html');
-var context={
+ ```
+ email = new Email(from, to);
+ jmcnet.email.setSmtpTransport(smtpServer, port, login, pwd, 60000);
+ template = jmcnet.emailTemplate.loadEmailTemplateFromFile('realTemplate ', '[\u2601 Testu] Création d\'un compte', 'test/emailTemplates/realTemplate.html');
+ var context={
             mail_commons_header : 'Vous recevez cet e-mail ...',
             headerH1 : 'Création d\'un compte',
             account : {
@@ -216,20 +216,20 @@ var context={
             },
             password : 'hyXPyDKx',
             urlAccountApp : 'http://clouderial.com/account-web'
-};
-var lang='fr';
-jmcnetEmail.setBaseImgDir('./test/emailTemplates/images');
-// Does a 2 pass rendering
-template.sendEmail2Pass(email, context, lang, function (err, info) {
+ };
+ var lang='fr';
+ jmcnetEmail.setBaseImgDir('./test/emailTemplates/images');
+ // Does a 2 pass rendering
+ template.sendEmail2Pass(email, context, lang, function (err, info) {
             expect(err).to.not.exist;
-});
-```
+ });
+ ```
 or
-```
-// Does a single pass rendering
-template.sendEmail(email, context, lang, function (err, info) {
+ ```
+ // Does a single pass rendering
+ template.sendEmail(email, context, lang, function (err, info) {
             expect(err).to.not.exist;
-});
+ });
 ```
 
 ## More Information

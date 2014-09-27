@@ -126,21 +126,49 @@ throw new jmcnet.exception.FunctionalException('The functional error message', [
  * <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
 
 ### Resource bundle for i18n .properties files (jmcnet-resourceBundle)
-* A module for dealing with resource bundle files in the .properties style.
-* <b><i>jmcnet.config.loadConfig(path, options)</i></b> : loads a set of configuration files. Path is the base directory of all configuration files. Options are the following :
+A module for dealing with resource bundle files in the .properties style. A resource bundle is a set of files having the same base name, a .properties file extension. Each file contains key/value set with different translations for a same key.
+
+ Examples of resource bundle files:
+
+ <i>test1_en.properties:</i>
+ ```
+ w1=Hello this is an English sentence
+ w2=${w1} and I will terminate it.
+ ```
+
+ <i>test1_fr.properties:</i>
+ ```
+ w1=Bonjour ceci est une phrase en Français
+ w2=${w1} et je la termine.
+ ```
+
+ <i>test1_fr_FR.properties:</i>
+ ```
+ w1=Bonjour ceci est une phrase en Français de France
+ w2=${w1} et je la termine.
+ ```
+
+* <b><i>jmcnet.resourceBundle.ResourceBundle(path, baseName)</i></b> : creates a resource bundle (ie. the set of files for each translation). Path is the base directory of all .properties files. BaseName is the base name used for all files.
 ```
-// the base file containing a reference to all subfile
-masterFileName: 'master-config.properties',
-// when the master file or a subfile is changed, reloads all
-reloadOnChange: true,
-// period in second between two checks
-checkReloadTimeSec: 10                      
+var rsc = new jmcnet.resourceBundle.ResourceBundle('./path/to/resources/', 'test1');        
 ```
 
-* <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
-* <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
-* <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
+* <b><i>ResourceBundle.load([callback])</i></b> : load all resource bundle files. If callback is provided, load is done asynchronously and callback is a function that takes an error in argument.
+* <b><i>ResourceBundle.getFiles()</i></b> : get all the properties files loaded. jmcnet.resourceBundle.getFiles().fr gives the property file for locale 'fr',
+* <b><i>jmcnet.resourceBundle.getBundle(bundleBaseName, locale)()</i></b> : gets the previously loaded bundle with base name 'bundleBaseName' and for locale 'locale'. If no file is provided for locale 'locale' the most approching locale is returned. That is file returned for base name 'test1' and locale 'en_En' could be (in order) 'test1_en_En.properties' or test1_en.properties' if the first one is not found.
 
+ <b>Code example using the tests files above :</b>
+ ```
+ new jmcnetResourceBundle.ResourceBundle('./test/resources/', 'test1');
+ new jmcnetResourceBundle.ResourceBundle('./test/resources/', 'test2');
+ ...
+ // gets the French for France properties file with base name test1
+ var w2 = jmcnetResourceBundle.getBundle('test1', 'fr_FR').get('w2');
+ expect(w2).to.equal('Bonjour ceci est une phrase en Français de France et je la termine.');
+ ...
+ var w2 = jmcnetResourceBundle.getBundle('test1', 'en_US').get('w2');
+ expect(w2).to.equal(Hello this is an English sentence and I will terminate it.');
+ ```
 
 
 ### Email features (jmcnet-email)

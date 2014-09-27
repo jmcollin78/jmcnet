@@ -41,7 +41,7 @@ ResourceBundle.prototype.loadFiles = function (cb) {
             if (_.startsWith(filename, me.bundleBaseName)) {
                 var props = new PropertiesFile(me.bundlePath + filename);
                 // extract lang
-                var rx = new RegExp(me.bundleBaseName + '-(.*).properties', 'gm');
+                var rx = new RegExp(me.bundleBaseName + '_(.*).properties', 'gm');
                 var locale = rx.exec(filename);
                 log.trace('locale is "%s"', util.inspect(locale));
                 if (!locale || locale.length < 2) {

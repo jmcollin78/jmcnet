@@ -7,7 +7,9 @@ It provides utility libraries for :
 * <i>jmcnet-config</i> - <b>properties file management</b> : automatic reload of .properties file on change, resources bundle for i18n features,
 * <i>jmcnet-email</i> - <b>email management</b> : add attachment, deals with image attachment, automatically create attachment from html text,
 * <i>jmcnet-emailTemplate</i> - <b>templated email features</b> : cooperate with email features above to send beautiful html templated emails,
-* <i>jmcnet-exception</i> - <b>exception feature</b> : the base exception used with all modules above.
+* <i>jmcnet-exception</i> - <b>exception feature</b> : the base exception used with all modules above,
+* <i>jmcnet-resourceBundle</i> - <b>Localized resource bundle</b> : dealing with localized resources bundle for i18n.
+
 
 ## Prerequisites
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/). You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm
@@ -30,7 +32,7 @@ All JMCNet libs have [Lodash](http://lodash.com/) and [Log4js-node](https://gith
 * <b>jmcnet-email</b> has [Node-mailer](http://www.nodemailer.com/) dependencies,
 * <b>jmcnet-emailTemplate</b> has [Ejs](http://embeddedjs.com/) dependencies,
 * <b>jmcnet-config</b> has [java-properties](https://github.com/mattdsteele/java-properties) dependencies,
-* 
+* <b>jmcnet-resourceBundle</b> has [java-properties](https://github.com/mattdsteele/java-properties) dependencies
 
 ## Quick Install
 The quickest way to get started with JMCNet Library is to fork the Github repo.
@@ -122,7 +124,25 @@ throw new jmcnet.exception.FunctionalException('The functional error message', [
  * <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
  * <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
  * <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
- 
+
+### Resource bundle for i18n .properties files (jmcnet-resourceBundle)
+* A module for dealing with resource bundle files in the .properties style.
+* <b><i>jmcnet.config.loadConfig(path, options)</i></b> : loads a set of configuration files. Path is the base directory of all configuration files. Options are the following :
+```
+// the base file containing a reference to all subfile
+masterFileName: 'master-config.properties',
+// when the master file or a subfile is changed, reloads all
+reloadOnChange: true,
+// period in second between two checks
+checkReloadTimeSec: 10                      
+```
+
+* <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
+* <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
+* <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
+
+
+
 ### Email features (jmcnet-email)
 A module to manage email and image attachments. You can use like this :
 

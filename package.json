@@ -1,7 +1,7 @@
 {
   "name": "jmcnet",
   "main": "./js/jmcnet.js",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "The JMCNet library ported to JS : send email, manage html email template, use .properties files and add some usefull date methods",
   "directories": {
     "test": "test"
@@ -27,7 +27,7 @@
   "dependencies": {
     "ejs": "^1.0.0",
     "grunt": "^0.4.5",
-    "java-properties": "^0.1.8",
+    "java-properties": "^0.2.0",
     "lodash": "^2.4.1",
     "log4js": "^0.6.14",
     "nodemailer": "^1.2.1"

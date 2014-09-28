@@ -14,13 +14,20 @@ var
     PropertiesFile = require('java-properties').PropertiesFile;
 
 var gBundles = {};
+var gDefaultOptions = {
+    reloadOnChange: true,
+    checkReloadTimeSec: 10
+};
+
 /**
  * Creates and load a ResourceBundle from a pathname and a bundleBaseName.
  * @param bundlePath String The path where all bundles files can be found
  * @param bundleBaseName String the bundle base name. For example in the properties file myProperties-fr_Fr.properties, the base name is myProperties
  * @return the newly created ResourceBundle
  */
-var ResourceBundle = function (bundlePath, bundleBaseName) {
+var ResourceBundle = function (bundlePath, bundleBaseName, options) {
+    if (!options) options = {};
+    this.options = _.defaults(options, gDefaultOptions);
     this.files = {}; // store the file indexed with lang
     this.bundlePath = _.endsWith(bundlePath, '/') ? bundlePath : bundlePath + '/';
     this.bundleBaseName = bundleBaseName;
@@ -39,7 +46,8 @@ ResourceBundle.prototype.loadFiles = function (cb) {
         _.forEach(fs.readdirSync(this.bundlePath), function (filename) {
             log.trace('Read file "%s" in dir "%s"', filename, me.bundlePath);
             if (_.startsWith(filename, me.bundleBaseName)) {
-                var props = new PropertiesFile(me.bundlePath + filename);
+                var filePath = me.bundlePath + filename;
+                var props = new PropertiesFile(filePath);
                 // extract lang
                 var rx = new RegExp(me.bundleBaseName + '_(.*).properties', 'gm');
                 var locale = rx.exec(filename);
@@ -47,7 +55,13 @@ ResourceBundle.prototype.loadFiles = function (cb) {
                 if (!locale || locale.length < 2) {
                     log.warn('Fund file "%s" which name is formatted correctly. Ignoring this file', filename);
                 } else {
-                    me.files[locale[1]] = props;
+                    var now = Math.floor((new Date()).getTime() / 1000);
+                    me.files[locale[1]] = {
+                        props: props,
+                        filePath: filePath,
+                        timeLastCheck: now,
+                        timeNextCheck: now + me.options.checkReloadTimeSec
+                    };
                 }
             } else log.trace('File "%s" is not part of bundle "%s"', filename, me.bundleBaseName);
         });
@@ -67,31 +81,67 @@ ResourceBundle.prototype.getFiles = function () {
     return this.files;
 };
 
+/**
+ * Checks if time check is expired and reload a file if it has changed during the last check
+ * @param options The ResourceBundle options of this file
+ * @param file an object containing filePath, timeLastCheck, timeNextCheck and props (the PropertiesFile)
+ * @return file the updated file
+ */
+var checkReloadFile = function (bundleOptions, file) {
+    if (!bundleOptions.reloadOnChange) return file;
+    var now = Math.floor((new Date()).getTime() / 1000);
+    if (now < file.timeNextCheck) {
+        log.trace('Time is not expired. Do not check if reload is needed');
+    } else {
+        log.debug('Time check is expired for file "%s"', file.filePath);
+        var stats = null;
+        try {
+            stats = fs.statSync(file.filePath);
+            if (stats.isFile() && stats.mtime >= file.timeLastCheck * 1000) {
+                log.trace('File "%s" has been changed since last check (%s)', file.filePath, new Date(file.timeLastCheck * 1000));
+                file.props = new PropertiesFile(file.filePath);
+                file.timeLastCheck = now;
+                file.timeNextCheck = now + bundleOptions.checkReloadTimeSec;
+            } else log.trace('File mtime "%d" is not changed', stats.mtime);
+        } catch (err) {
+            log.error(err);
+        }
+    }
+    return file;
+};
+
 /*
- * Returns the first PropertiesFile mathcing the locale given in arguments. 'en' match 'en_En'
+ * Returns the first PropertiesFile matching the locale given in arguments. 'en' match 'en_En'
  * @return propertiesFile instance of PropertiesFile class or null is no file is found matching the locale
  */
 ResourceBundle.prototype.getLocaleFile = function (locale) {
     // try to return the first lang matching
     // First check the given locale
-    if (this.files[locale]) return this.files[locale];
-    // not found directly extract the lang before the '_'
-    var lang;
-    var idx = locale.indexOf('_');
-    if (idx > 0) lang = locale.substring(0, idx);
-    if (lang) {
-        log.trace('search for lang "%s"', lang);
-        if (this.files[lang]) return this.files[lang];
+    var file = this.files[locale];
+    if (!file) {
+        // not found directly extract the lang before the '_'
+        var lang;
+        var idx = locale.indexOf('_');
+        if (idx > 0) lang = locale.substring(0, idx);
+        if (lang) {
+            log.trace('search for lang "%s"', lang);
+            file = this.files[lang];
+        }
     }
-    log.warn('No bundle file for locale "%s" for bundle "%s"', locale, this.bundleBaseName);
-    return undefined;
+    if (file) {
+        log.trace('We have found a file "%s". Check if we need to reload it', file.filePath);
+        return checkReloadFile(this.options, file);
+    } else {
+        log.warn('No bundle file for locale "%s" for bundle "%s"', locale, this.bundleBaseName);
+        return undefined;
+    }
 };
 
 var getBundle = function (bundleBaseName, locale) {
     if (gBundles[bundleBaseName]) {
-        return gBundles[bundleBaseName].getLocaleFile(locale);
-    }
-    else {
+        var file = gBundles[bundleBaseName].getLocaleFile(locale);
+        return file ? file.props : undefined;
+    } else {
         log.warn('No bundle named "%" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
         return undefined;
     }
@@ -99,5 +149,5 @@ var getBundle = function (bundleBaseName, locale) {
 
 module.exports = {
     ResourceBundle: ResourceBundle,
-    getBundle : getBundle
+    getBundle: getBundle
 };

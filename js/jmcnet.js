@@ -4,7 +4,7 @@ var jmcnetDate = require('./jmcnetDate.js'),
     jmcnetException = require('./jmcnetException.js'),
     jmcnetEmailTemplate = require('./jmcnetEmailTemplate.js'),
     jmcnetEmail = require('./jmcnetEmail.js'),
-    jmcnetConfig = require('./jmcnetConfig.js');
+    jmcnetConfig = require('./jmcnetConfig.js'),
     jmcnetResourceBundle = require('./jmcnetResourceBundle.js');
 
 module.exports = {

@@ -10,14 +10,14 @@ var jmcnetResourceBundle = require('../js/jmcnetResourceBundle.js'),
     log = require('log4js').getLogger('jmcnet.resourceBundle'),
     util = require('util'),
     fs = require('fs')
-//    ,_ = require('lodash')
+    //    ,_ = require('lodash')
 ;
 
 // The tests
 describe('<JMCNet ResourceBundle Unit Test>', function () {
     describe('create and loading files', function () {
         var rsc;
-        before(function(done) {
+        before(function (done) {
             rsc = new jmcnetResourceBundle.ResourceBundle('./test/resources/test1', 'test1');
             done();
         });
@@ -31,41 +31,67 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
 
             done();
         });
-        
-        it('should be possible to retrieve the fr PropertiesFile', function(done) {
+
+        it('should be possible to retrieve the fr PropertiesFile', function (done) {
             var bundle = jmcnetResourceBundle.getBundle('test1', 'fr');
             expect(bundle.get('w2')).to.equal('Bonjour ceci est une phrase en Français et je la termine.');
             done();
         });
-        
-        it('should be possible to retrieve the fr_FR PropertiesFile', function(done) {
+
+        it('should be possible to retrieve the fr_FR PropertiesFile', function (done) {
             var bundle = jmcnetResourceBundle.getBundle('test1', 'fr_FR');
             expect(bundle.get('w2')).to.equal('Bonjour ceci est une phrase en Français de France et je la termine.');
             done();
         });
-        
-        it('should be possible to retrieve the en PropertiesFile', function(done) {
+
+        it('should be possible to retrieve the en PropertiesFile', function (done) {
             var bundle = jmcnetResourceBundle.getBundle('test1', 'en');
             expect(bundle.get('w2')).to.equal('Hello this is an English sentence and I will terminate it.');
             done();
         });
-        
-        it('should be possible to fall down to the en PropertiesFile when asking for en_EN file', function(done) {
+
+        it('should be possible to fall down to the en PropertiesFile when asking for en_EN file', function (done) {
             var bundle = jmcnetResourceBundle.getBundle('test1', 'en_EN');
             expect(bundle.get('w2')).to.equal('Hello this is an English sentence and I will terminate it.');
             done();
         });
-        
-        it('should not be possible to get the de PropertiesFile', function(done) {
+
+        it('should not be possible to get the de PropertiesFile', function (done) {
             var bundle = jmcnetResourceBundle.getBundle('test1', 'de');
             expect(bundle).to.not.exist;
             done();
         });
-        
-        it('should not be possible to get a bundle named test2', function(done) {
+
+        it('should not be possible to get a bundle named test2', function (done) {
             var bundle = jmcnetResourceBundle.getBundle('test2', 'fr');
             expect(bundle).to.not.exist;
             done();
+        });
+    });
+
+    describe.only('check automatic reload Test :', function () {
+        var rsc;
+        before(function (done) {
+            rsc = new jmcnetResourceBundle.ResourceBundle('./test/resources/test1', 'test1', {
+                reloadOnChange: true,
+                checkReloadTimeSec: 0 // always check
+            });
+            rsc.loadFiles(done);
+        });
+        it('should be possible to reload file if it has change', function (done) {
+            log.debug('Test reload file on file change');
+            expect(rsc.getLocaleFile('fr').props.get('w3')).to.not.exist;
+
+            var fileName = './test/resources/test1/test1_fr.properties';
+            var stats = fs.statSync(fileName);
+            fs.appendFile(fileName, '\nw3=The new value', function (err) {
+                if (err) throw err;
+                // reload must be done
+                expect(jmcnetResourceBundle.getBundle('test1', 'fr').get('w3')).to.equal('The new value');
+                // remove the last blank
+                fs.truncateSync(fileName, stats.size);
+                done();
+            });
         });
     });
 });

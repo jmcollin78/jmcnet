@@ -26,8 +26,7 @@ var gDefaultOptions = {
  * @return the newly created ResourceBundle
  */
 var ResourceBundle = function (bundlePath, bundleBaseName, options) {
-    if (!options) options = {};
-    this.options = _.defaults(options, gDefaultOptions);
+    this.setOptions(options);
     this.files = {}; // store the file indexed with lang
     this.bundlePath = _.endsWith(bundlePath, '/') ? bundlePath : bundlePath + '/';
     this.bundleBaseName = bundleBaseName;
@@ -79,6 +78,11 @@ ResourceBundle.prototype.loadFiles = function (cb) {
 ResourceBundle.prototype.getFiles = function () {
     log.trace('ResourceBundle.files = "%s"', util.inspect(this.files));
     return this.files;
+};
+
+ResourceBundle.prototype.setOptions = function (options) {
+    if (!options) options = {};
+    this.options = _.defaults(options, gDefaultOptions);
 };
 
 /**

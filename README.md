@@ -93,7 +93,7 @@ var jmcnet = require('jmcnet');
 JMCNet Library contains those modules :
 
 ### Exception (jmcnet-exception)
-* A base module containing BaseException, FunctionalException and TechnicalException
+A base module containing BaseException, FunctionalException and TechnicalException
 ```
 throw new jmcnet.exception.TechnicalException('The error message', [arg1, arg2]);
 ...
@@ -101,7 +101,8 @@ throw new jmcnet.exception.FunctionalException('The functional error message', [
 ```
 
 ### Date manipulation (jmcnet-date)
-* A module containing date helpers functions like :
+A module containing date helpers functions like :
+
  * <b><i>jmcnet.date.getDateHourMinuteNow()</i></b> : gives the current date limited to minutes informations (skip seconds and millisec),
  * <b><i>jmcnet.date.getDateNow()</i></b> : gives the current date limited to date informations (skip hours, muinutes, seconds and millisec),
  * <b><i>jmcnet.date.addDays(date, nbDays)</i></b> : gives back a date which is date in argument with days augmented by nbDays,
@@ -110,7 +111,8 @@ throw new jmcnet.exception.FunctionalException('The functional error message', [
  * <b><i>jmcnet.date.addMonth(date, nbYears)</i></b> : gives back a date which is date in argument with year augmented by nbYears,
 
 ### .properties files manipulations (jmcnet-config)
-* A module for dealing with configuration files in the .properties style (like in Java) with <b>automatic reload of the properties on file changes</b>
+A module for dealing with configuration files in the .properties style (like in Java) with <b>automatic reload of the properties on file changes</b>.
+
  * <b><i>jmcnet.config.loadConfig(path, options)</i></b> : loads a set of configuration files. Path is the base directory of all configuration files. Options are the following :
  ```
     // the base file containing a reference to all subfile
@@ -120,7 +122,7 @@ throw new jmcnet.exception.FunctionalException('The functional error message', [
     // period in second between two checks
     checkReloadTimeSec: 10                      
 ```
-
+ 
  * <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
  * <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
  * <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
@@ -148,28 +150,49 @@ A module for dealing with resource bundle files in the .properties style. A reso
  w2=${w1} et je la termine.
  ```
 
-* <b><i>jmcnet.resourceBundle.ResourceBundle(path, baseName)</i></b> : creates a resource bundle (ie. the set of files for each translation). Path is the base directory of all .properties files. BaseName is the base name used for all files.
+* <b><i>jmcnet.resourceBundle.ResourceBundle(path, baseName, options)</i></b> : creates a resource bundle (ie. the set of files for each translation). Path is the base directory of all .properties files. BaseName is the base name used for all files. See options below.
 ```
 var rsc = new jmcnet.resourceBundle.ResourceBundle('./path/to/resources/', 'test1');        
 ```
 
+* <b><i>jmcnet.resourceBundle.getLocaleFile(bundleBaseName, locale)</i></b> : gets the previously loaded properties file for bundle with base name 'bundleBaseName' and for locale 'locale'. If no file is provided for locale 'locale' the most approching locale is returned. That is file returned for base name 'test1' and locale 'en_En' could be (in order) 'test1_en_En.properties' or test1_en.properties' if the first one is not found,
+* <b><i>jmcnetResourceBundle.getBundle(bundleBaseName) : retrieve the bundle named bundleBaseName</i></b>
 * <b><i>ResourceBundle.load([callback])</i></b> : load all resource bundle files. If callback is provided, load is done asynchronously and callback is a function that takes an error in argument.
 * <b><i>ResourceBundle.getFiles()</i></b> : get all the properties files loaded. jmcnet.resourceBundle.getFiles().fr gives the property file for locale 'fr',
-* <b><i>jmcnet.resourceBundle.getBundle(bundleBaseName, locale)()</i></b> : gets the previously loaded bundle with base name 'bundleBaseName' and for locale 'locale'. If no file is provided for locale 'locale' the most approching locale is returned. That is file returned for base name 'test1' and locale 'en_En' could be (in order) 'test1_en_En.properties' or test1_en.properties' if the first one is not found.
+* <b><i>ResourceBundle.setOptions(options)</i></b> : set the reload options of the resource bundle. Available options are :
+ ```
+    // when one of the locale file is changed, reloads it
+    reloadOnChange: true,
+    // period in second between two checks
+    checkReloadTimeSec: 10                      
+ ```
 
  <b>Code example using the tests files above :</b>
  ```
- new jmcnetResourceBundle.ResourceBundle('./test/resources/', 'test1');
+ new jmcnetResourceBundle.ResourceBundle('./test/resources/', 'test1', {
+    reloadOnChange: false // don't check for file change
+ }); 
+ // creates a new ResourceBundle will check for file change every minutes
  new jmcnetResourceBundle.ResourceBundle('./test/resources/', 'test2');
  ...
  // gets the French for France properties file with base name test1
- var w2 = jmcnetResourceBundle.getBundle('test1', 'fr_FR').get('w2');
+ var w2 = jmcnetResourceBundle.getLocaleFile('test1', 'fr_FR').get('w2');
  expect(w2).to.equal('Bonjour ceci est une phrase en Français de France et je la termine.');
  ...
- var w2 = jmcnetResourceBundle.getBundle('test1', 'en_US').get('w2');
+ var w2 = jmcnetResourceBundle.getLocaleFile('test1', 'en_US').get('w2');
  expect(w2).to.equal(Hello this is an English sentence and I will terminate it.');
+ ...
+ var rsc = new jmcnetResourceBundle.ResourceBundle('./test/resources/', 'test2');
+ var localeFile = rsc.getLocaleFile('en_EN');
+ war w2 = localeFile.get('a.key', 'a default value');
+ ...
+ rsc.setOptions({
+     reloadOnChange: true,
+     checkReloadTimeSec: 60 // check every minute if file has change and reloads the file
+ });
  ```
-
+ 
+ 
 
 ### Email features (jmcnet-email)
 A module to manage email and image attachments. You can use like this :

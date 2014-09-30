@@ -6,9 +6,9 @@
  */
 var expect = require('chai').expect; // jshint ignore:line
 var jmcnetResourceBundle = require('../js/jmcnetResourceBundle.js'),
-    jmcnetException = require('../js/jmcnetException.js'),
+//    jmcnetException = require('../js/jmcnetException.js'),
     log = require('log4js').getLogger('jmcnet.resourceBundle'),
-    util = require('util'),
+//    util = require('util'),
     fs = require('fs')
     //    ,_ = require('lodash')
 ;
@@ -31,40 +31,45 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
 
             done();
         });
+        
+        it('should be possible to get the bundle', function() {
+            var bundle = jmcnetResourceBundle.getBundle('test1');
+            expect(bundle).to.deep.equal(rsc);
+        });
 
         it('should be possible to retrieve the fr PropertiesFile', function (done) {
-            var bundle = jmcnetResourceBundle.getBundle('test1', 'fr');
-            expect(bundle.get('w2')).to.equal('Bonjour ceci est une phrase en Français et je la termine.');
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'fr');
+            expect(localFile.get('w2')).to.equal('Bonjour ceci est une phrase en Français et je la termine.');
             done();
         });
 
         it('should be possible to retrieve the fr_FR PropertiesFile', function (done) {
-            var bundle = jmcnetResourceBundle.getBundle('test1', 'fr_FR');
-            expect(bundle.get('w2')).to.equal('Bonjour ceci est une phrase en Français de France et je la termine.');
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'fr_FR');
+            expect(localFile.get('w2')).to.equal('Bonjour ceci est une phrase en Français de France et je la termine.');
             done();
         });
 
         it('should be possible to retrieve the en PropertiesFile', function (done) {
-            var bundle = jmcnetResourceBundle.getBundle('test1', 'en');
-            expect(bundle.get('w2')).to.equal('Hello this is an English sentence and I will terminate it.');
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'en');
+            expect(localFile.get('w2')).to.equal('Hello this is an English sentence and I will terminate it.');
             done();
         });
 
         it('should be possible to fall down to the en PropertiesFile when asking for en_EN file', function (done) {
-            var bundle = jmcnetResourceBundle.getBundle('test1', 'en_EN');
-            expect(bundle.get('w2')).to.equal('Hello this is an English sentence and I will terminate it.');
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'en_EN');
+            expect(localFile.get('w2')).to.equal('Hello this is an English sentence and I will terminate it.');
             done();
         });
 
         it('should not be possible to get the de PropertiesFile', function (done) {
-            var bundle = jmcnetResourceBundle.getBundle('test1', 'de');
-            expect(bundle).to.not.exist;
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'de');
+            expect(localFile).to.not.exist;
             done();
         });
 
         it('should not be possible to get a bundle named test2', function (done) {
-            var bundle = jmcnetResourceBundle.getBundle('test2', 'fr');
-            expect(bundle).to.not.exist;
+            var localFile = jmcnetResourceBundle.getLocaleFile('test2', 'fr');
+            expect(localFile).to.not.exist;
             done();
         });
     });
@@ -87,7 +92,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
             fs.appendFile(fileName, '\nw3=The new value', function (err) {
                 if (err) throw err;
                 // reload must be done
-                expect(jmcnetResourceBundle.getBundle('test1', 'fr').get('w3')).to.equal('The new value');
+                expect(jmcnetResourceBundle.getLocaleFile('test1', 'fr').get('w3')).to.equal('The new value');
                 // remove the last blank
                 fs.truncateSync(fileName, stats.size);
                 done();
@@ -95,8 +100,8 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
         });
         it('should not be possible to reload file that hasn\'t has change', function () {
             log.debug('Test reload file on file change');
-            expect(jmcnetResourceBundle.getBundle('test1', 'fr').get('w3')).to.not.exist;
-            expect(jmcnetResourceBundle.getBundle('test1', 'fr').get('w3')).to.not.exist;
+            expect(jmcnetResourceBundle.getLocaleFile('test1', 'fr').get('w3')).to.not.exist;
+            expect(jmcnetResourceBundle.getLocaleFile('test1', 'fr').get('w3')).to.not.exist;
         });
         it('should not be possible to reload when reloadOnChange option is false', function (done) {
             rsc.setOptions({
@@ -110,7 +115,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
             fs.appendFile(fileName, '\nw3=The new value', function (err) {
                 if (err) throw err;
                 // reload must be done
-                expect(jmcnetResourceBundle.getBundle('test1', 'fr').get('w3')).to.not.exist;
+                expect(jmcnetResourceBundle.getLocaleFile('test1', 'fr').get('w3')).to.not.exist;
                 // remove the last blank
                 fs.truncateSync(fileName, stats.size);
                 done();
@@ -130,7 +135,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
                 // reload must be done after 1 sec
                 setTimeout(function () {
                     log.trace('File is modified and timeout is expired, reload and check the value');
-                    expect(jmcnetResourceBundle.getBundle('test1', 'fr').get('w3')).to.equal('The new value');
+                    expect(jmcnetResourceBundle.getLocaleFile('test1', 'fr').get('w3')).to.equal('The new value');
                     // remove the last blank
                     fs.truncateSync(fileName, stats.size);
                     done();

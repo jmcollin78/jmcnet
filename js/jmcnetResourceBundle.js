@@ -16,7 +16,7 @@ var
 var gBundles = {};
 var gDefaultOptions = {
     reloadOnChange: true,
-    checkReloadTimeSec: 10
+    checkReloadTimeSec: 60
 };
 
 /**
@@ -141,9 +141,19 @@ ResourceBundle.prototype.getLocaleFile = function (locale) {
     }
 };
 
-var getBundle = function (bundleBaseName, locale) {
+var getBundle = function (bundleBaseName) {
     if (gBundles[bundleBaseName]) {
-        var file = gBundles[bundleBaseName].getLocaleFile(locale);
+        return gBundles[bundleBaseName];
+    } else {
+        log.warn('No bundle named "%" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
+        return undefined;
+    }
+};
+
+var getLocaleFile = function (bundleBaseName, locale) {
+    var bundle = getBundle(bundleBaseName);
+    if (bundle) {
+        var file = bundle.getLocaleFile(locale);
         return file ? file.props : undefined;
     } else {
         log.warn('No bundle named "%" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
@@ -153,5 +163,6 @@ var getBundle = function (bundleBaseName, locale) {
 
 module.exports = {
     ResourceBundle: ResourceBundle,
-    getBundle: getBundle
+    getBundle: getBundle,
+    getLocaleFile : getLocaleFile
 };

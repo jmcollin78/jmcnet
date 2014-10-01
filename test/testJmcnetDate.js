@@ -111,7 +111,8 @@ describe('<JMCNet Date Unit Test>', function () {
             var d = jmcDate.addMonths(now, 1);
             log.debug('d + 1 month is "%s"', d);
             expect(d.getTime()).to.be.at.least(28 * 86400000 + now.getTime());
-            expect(d.getTime()).to.be.at.most(31 * 86400000 + now.getTime());
+            // We add one hour to get the case when we change time
+            expect(d.getTime()).to.be.at.most(31 * 86400000 + now.getTime() + 1 * 3600000);
             done();
         });
 
@@ -120,7 +121,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var d = jmcDate.addMonths(now, -1);
             log.debug('d - 1 month is "%s"', d);
             expect(d.getTime()).to.be.lessThan(-28 * 86400000 + now.getTime());
-            expect(d.getTime()).to.be.at.least(-31 * 86400000 + now.getTime());
+            expect(d.getTime()).to.be.at.least(-31 * 86400000 + now.getTime() - 1 * 3600000);
             done();
         });
 

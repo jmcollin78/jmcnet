@@ -135,13 +135,23 @@ function get(key, defaultValue) {
         log.info('We must reload the config');
         loadConfig(gDir, gOptions);
     }
-    var val = gConfig.get(key);
-    return val ? val : defaultValue;
+    return gConfig.get(key, defaultValue);
 }
 
 function getInt(key, defaultValue) {
-    var val = get(key, defaultValue);
-    return val ? parseInt(get(key, defaultValue)):undefined;
+    if (checkFileChanges()) {
+        log.info('We must reload the config');
+        loadConfig(gDir, gOptions);
+    }
+    return gConfig.getInt(key, defaultValue);
+}
+
+function getFloat(key, defaultValue) {
+    if (checkFileChanges()) {
+        log.info('We must reload the config');
+        loadConfig(gDir, gOptions);
+    }
+    return gConfig.getFloat(key, defaultValue);
 }
 
 function getKeys() { return gConfig.getKeys(); }

@@ -29,8 +29,8 @@ function EmailTemplate(templateName, subjectTemplate, bodyTemplate) {
 
 EmailTemplate.prototype.initTemplate = function (templateName) {
     log.trace('Initializing the template "%s"', templateName);
-    this.subjectCompile = ejs.compile(this.subjectTemplate);
-    this.bodyCompile = ejs.compile(this.bodyTemplate);
+    if (this.subjectTemplate) this.subjectCompile = ejs.compile(this.subjectTemplate);
+    if (this.bodyTemplate)    this.bodyCompile = ejs.compile(this.bodyTemplate);
     gLstMailTpl[templateName] = this;
     log.trace('Template list is now "%s"', util.inspect(gLstMailTpl));
     return this;
@@ -86,6 +86,22 @@ EmailTemplate.prototype.sendEmail2Pass = function(email, context, lang, cb) {
     tmp = this.renderBody(context, lang);
     email.html = ejs.render(tmp, context);
     email.sendEmail(cb);
+};
+
+/**
+ * Sets the subject template
+ */
+EmailTemplate.prototype.setSubjectTemplate = function(subjectTemplate) {
+    this.subjectTemplate = subjectTemplate;
+    if (subjectTemplate) this.subjectCompile = ejs.compile(this.subjectTemplate);
+};
+
+/**
+ * Sets the body template
+ */
+EmailTemplate.prototype.setBodyTemplate = function(bodyTemplate) {
+    this.bodyTemplate = bodyTemplate;
+    if (bodyTemplate) this.bodyCompile = ejs.compile(this.bodyTemplate);
 };
 
 function getEmailTemplate(templateName) {

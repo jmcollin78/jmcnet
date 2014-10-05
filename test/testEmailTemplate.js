@@ -128,6 +128,31 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
             done();
         });
     });
+    
+    describe('Set subject and body template', function(done) {
+        var tpl;
+        before(function (done) {
+            jmcnetEmailTemplate.resetEmailTemplates();
+            tpl = new jmcnetEmailTemplate.EmailTemplate('template1');
+            done();
+        });
+        it('should be possible to change and render the subject and body', function (done) {
+            tpl.setSubjectTemplate('The date is <%= date %>');
+            tpl.setBodyTemplate('body <%=body%>');
+            var subject, body;
+            subject = tpl.renderSubject({
+                date: '2014-10-05',
+                body: 'This is the body of the mail'
+            });
+            expect(subject).to.equal('The date is 2014-10-05');
+            body = tpl.renderBody({
+                date: '2014-10-05',
+                body: 'This is the body of the mail'
+            }, 'fr');
+            expect(body).to.equal('body This is the body of the mail');
+            done();
+        });
+    });
 
     after(function (done) {
         // TODO do some after exit clean

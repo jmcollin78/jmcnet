@@ -138,6 +138,7 @@ module.exports = {
     },
     getTransport : function () { return gTransporter; },
     Email: Email,
+    FakeTransport : FakeTransport,
     setBaseImgDir: function (baseImgDir) {
         gBaseImgDir = baseImgDir;
     }

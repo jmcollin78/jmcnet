@@ -17,6 +17,12 @@ var jmcnetConfig = require('../js/jmcnetConfig.js'),
 // The tests
 describe('<JMCNet Config Unit Test>', function () {
     describe('loadConfig in empty dir', function () {
+        it('should be possible to access non initialized config file', function() {
+            log.debug('Test non initialized config file');
+            expect(jmcnetConfig.get('dontexists','defaultValue')).to.equal('defaultValue');
+            expect(jmcnetConfig.getInt('dontexists',12)).to.equal(12);
+            expect(jmcnetConfig.getFloat('dontexists',12.34)).to.equal(12.34);
+        });
         it('should not be possible to load a config file that doesn"t exists', function (done) {
             log.debug('Test loadConfig empty');
             try {
@@ -25,7 +31,7 @@ describe('<JMCNet Config Unit Test>', function () {
             } catch (err) {
                 expect(err).to.be.an.instanceOf(jmcnetException.TechnicalException);
             }
-            expect(jmcnetConfig.getConfig()).to.be.empty;
+            expect(jmcnetConfig.getConfig().getKeys()).to.be.empty;
             done();
         });
     });

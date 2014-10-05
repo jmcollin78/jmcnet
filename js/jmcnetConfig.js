@@ -13,7 +13,8 @@ var
     fs = require('fs'),
     Properties = require('java-properties');
 
-var gConfig = {};
+// Initialize with an empty PropertiesFile
+var gConfig = new Properties.PropertiesFile();
 var gTimeLastCheck = 0;
 var gTimeNextCheck = 0;
 /* Managed options are : 
@@ -164,6 +165,7 @@ module.exports = {
     getKeys: getKeys,
     get : get,
     getInt : getInt,
+    getFloat : getFloat,
     getOptions: getOptions,
     checkFileChanges : checkFileChanges,
     addListener : addListener

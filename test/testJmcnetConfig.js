@@ -244,4 +244,19 @@ describe('<JMCNet Config Unit Test>', function () {
             expect(jmcnetConfig.getInt('sub2.int.value', 12)).to.equal(14);
         });
     });
+    describe('check bool value', function() {
+        before(function(done) {
+            log.trace('\n\n-----------------------------------\n\n');
+            jmcnetConfig.loadConfig('./test/config/');
+            done();
+        });
+        it('should get a boolean value', function() {
+            expect(jmcnetConfig.getBoolean('sub1.value1.dontExists')).to.be.false;
+            expect(jmcnetConfig.getBoolean('sub1.value1.dontExists', true)).to.be.true;
+            expect(jmcnetConfig.getBoolean('sub2.true.value1')).to.be.true;
+            expect(jmcnetConfig.getBoolean('sub2.true.value2')).to.be.true;
+            expect(jmcnetConfig.getBoolean('sub2.false.value1')).to.be.false;
+            expect(jmcnetConfig.getBoolean('sub2.false.value2')).to.be.false;
+        });
+    });
 });

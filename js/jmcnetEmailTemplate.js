@@ -114,7 +114,7 @@ function loadEmailTemplateFromFile(templateName, subjectTemplate, bodyFileName) 
         body.replace(/\r/g, '');
         return new EmailTemplate(templateName, subjectTemplate, body);
     } catch (err) {
-        log.error('Impossible to load EmailTemplate from file. Err is "%s"', util.inspect(err));
+        log.error('Impossible to load EmailTemplate "%s" from file "%s". Err is "%s"', templateName, bodyFileName, util.inspect(err));
         throw new jmcnetException.TechnicalException(err.message, [bodyFileName]);
     }
 }

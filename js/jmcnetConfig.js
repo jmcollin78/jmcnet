@@ -50,7 +50,7 @@ function loadConfig(dir, options) {
     if (!options) options = {};
     gOptions = _.defaults(options, gDefaultOptions);
 
-    log.trace('Loading config from dir "%s" with options "%s"', dir, util.inspect(gOptions));
+    log.info('Loading config from dir "%s" with options "%s"', dir, util.inspect(gOptions));
     gDir = dir;
     // add trailing / if not already set
     if (! _.endsWith(gDir, '/')) gDir += '/';
@@ -79,7 +79,7 @@ function loadConfig(dir, options) {
             gFiles.push(gDir + fileName);
         });
         log.trace('config is now : "%s"', util.inspect(config));
-        log.trace('Files loaded : "%s"', gFiles);
+        log.debug('Files loaded : "%s"', gFiles);
         gConfig = config;
         gTimeLastCheck = Math.floor((new Date()).getTime() / 1000);
         gTimeNextCheck = gTimeLastCheck + gOptions.checkReloadTimeSec;
@@ -155,6 +155,14 @@ function getFloat(key, defaultValue) {
     return gConfig.getFloat(key, defaultValue);
 }
 
+function getBoolean(key, defaultValue) {
+    if (checkFileChanges()) {
+        log.info('We must reload the config');
+        loadConfig(gDir, gOptions);
+    }
+    return gConfig.getBoolean(key, defaultValue);
+}
+
 function getKeys() { return gConfig.getKeys(); }
 
 function addListener(callback) { gListeners.push(callback); }
@@ -166,6 +174,7 @@ module.exports = {
     get : get,
     getInt : getInt,
     getFloat : getFloat,
+    getBoolean : getBoolean,
     getOptions: getOptions,
     checkFileChanges : checkFileChanges,
     addListener : addListener

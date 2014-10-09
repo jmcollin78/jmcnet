@@ -145,7 +145,7 @@ var getBundle = function (bundleBaseName) {
     if (gBundles[bundleBaseName]) {
         return gBundles[bundleBaseName];
     } else {
-        log.warn('No bundle named "%" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
+        log.warn('No bundle named "%s" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
         return undefined;
     }
 };
@@ -156,7 +156,7 @@ var getLocaleFile = function (bundleBaseName, locale) {
         var file = bundle.getLocaleFile(locale);
         return file ? file.props : undefined;
     } else {
-        log.warn('No bundle named "%" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
+        log.warn('No bundle named "%s" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
         return undefined;
     }
 };

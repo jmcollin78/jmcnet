@@ -66,9 +66,11 @@ EmailTemplate.prototype.renderBody = function (context, lang) {
  * @param cb the callback function once email has been send. This callback takes err and info in arguments
  */
 EmailTemplate.prototype.sendEmail = function(email, context, lang, cb) {
-    log.trace('Sending the email "%" with template "%s", context "%s" and lang="%s"', util.inspect(email), util.inspect(this), util.inspect(context), lang);
+    log.debug('Sending the email "%s" with template "%s", context "%s" and lang="%s"', util.inspect(email), util.inspect(this), util.inspect(context), lang);
     email.subject = this.renderSubject(context, lang);
     email.html = this.renderBody(context, lang);
+    log.debug('subject="%s"', email.subject);
+    log.debug('html="%s"', email.html);
     email.sendEmail(cb);
 };
 
@@ -80,11 +82,15 @@ EmailTemplate.prototype.sendEmail = function(email, context, lang, cb) {
  * @param cb the callback function once email has been send. This callback takes err and info in arguments
  */
 EmailTemplate.prototype.sendEmail2Pass = function(email, context, lang, cb) {
-    log.trace('Sending the email "%" with template "%s", context "%s" and lang="%s" with 2 pass', util.inspect(email), util.inspect(this), util.inspect(context), lang);
+    log.debug('Sending the email "%s" with template "%s", context "%s" and lang="%s" with 2 pass', util.inspect(email), util.inspect(this), util.inspect(context), lang);
     var tmp = this.renderSubject(context, lang);
+    log.debug('subjectPass1="%s"', tmp);
     email.subject = ejs.render(tmp, context);
     tmp = this.renderBody(context, lang);
+    log.debug('htmlPass1="%s"', tmp);
     email.html = ejs.render(tmp, context);
+    log.debug('subjectPass2="%s"', email.subject);
+    log.debug('htmlPass2="%s"', email.html);
     email.sendEmail(cb);
 };
 

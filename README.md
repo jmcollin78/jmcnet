@@ -303,6 +303,9 @@ or
  });
 ```
 
+## Release notes
+* 1.2.8 : fix some log verbosity
+
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).
 * Visit our blog informations at [Clouderial.com](http://clouderial.com/blog).

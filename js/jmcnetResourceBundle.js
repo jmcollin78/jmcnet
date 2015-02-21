@@ -11,7 +11,8 @@ var
     jmcnetException = require('../js/jmcnetException.js'),
     util = require('util'),
     fs = require('fs'),
-    PropertiesFile = require('java-properties').PropertiesFile;
+    PropertiesFile = require('java-properties').PropertiesFile,
+    ejs = require('ejs');
 
 var gBundles = {};
 var gDefaultOptions = {
@@ -39,7 +40,7 @@ var ResourceBundle = function (bundlePath, bundleBaseName, options) {
  * @param cb the callback function when files are loaded
  */
 ResourceBundle.prototype.loadFiles = function (cb) {
-    log.trace('Calling ResourceBundle.loadFiles bundlePath="%s" bundleBaseName="%s"', this.bundlePath, this.bundleBaseName);
+    log.info('Calling ResourceBundle.loadFiles bundlePath="%s" bundleBaseName="%s"', this.bundlePath, this.bundleBaseName);
     var me = this;
     try {
         _.forEach(fs.readdirSync(this.bundlePath), function (filename) {
@@ -161,8 +162,19 @@ var getLocaleFile = function (bundleBaseName, locale) {
     }
 };
 
+/**
+ * Replace template value in String with context values. The template String comes from a file.get(key)
+ * @return String the replaced String or null if key is not present in file
+ */
+var getLocaleString = function (file, key, context) {
+    var keyValue = file.get(key, undefined);
+    if (!keyValue) return null;
+    return ejs.render(keyValue, context);
+};
+
 module.exports = {
     ResourceBundle: ResourceBundle,
     getBundle: getBundle,
-    getLocaleFile : getLocaleFile
+    getLocaleFile : getLocaleFile,
+    getLocalString : getLocaleString
 };

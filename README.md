@@ -142,6 +142,7 @@ A module for dealing with resource bundle files in the .properties style. A reso
  ```
  w1=Bonjour ceci est une phrase en Français
  w2=${w1} et je la termine.
+ templatedString=The templated String with val1=<%= val1 %> and val2=<%= val2 %>.
  ```
 
  <i>test1_fr_FR.properties:</i>
@@ -156,6 +157,7 @@ var rsc = new jmcnet.resourceBundle.ResourceBundle('./path/to/resources/', 'test
 ```
 
 * <b><i>jmcnet.resourceBundle.getLocaleFile(bundleBaseName, locale)</i></b> : gets the previously loaded properties file for bundle with base name 'bundleBaseName' and for locale 'locale'. If no file is provided for locale 'locale' the most approching locale is returned. That is file returned for base name 'test1' and locale 'en_En' could be (in order) 'test1_en_En.properties' or test1_en.properties' if the first one is not found,
+* <b><i>jmcnet.resourceBundle.getLocaleString(file, key, context)</i></b> : get a string from a locale file 'file'. The string is assumed to be a template string (in the form of ejs). Values from template string are replaced with 'context'. See example below,
 * <b><i>jmcnetResourceBundle.getBundle(bundleBaseName) : retrieve the bundle named bundleBaseName</i></b>
 * <b><i>ResourceBundle.load([callback])</i></b> : load all resource bundle files. If callback is provided, load is done asynchronously and callback is a function that takes an error in argument.
 * <b><i>ResourceBundle.getFiles()</i></b> : get all the properties files loaded. jmcnet.resourceBundle.getFiles().fr gives the property file for locale 'fr',
@@ -190,9 +192,18 @@ var rsc = new jmcnet.resourceBundle.ResourceBundle('./path/to/resources/', 'test
      reloadOnChange: true,
      checkReloadTimeSec: 60 // check every minute if file has change and reloads the file
  });
+ ...
+ 
+ // Templating
+ var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'fr');
+ var replacedValue = jmcnetResourceBundle.getLocalString(
+     localFile,
+     'templatedString',
+     { val1 : 'val1', val2 : 12});
+ expect(replacedValue).to.equal('The templated String with val1=val1 and val2=12.');
+            
  ```
- 
- 
+  
 
 ### Email features (jmcnet-email)
 A module to manage email and image attachments. You can use like this :
@@ -304,6 +315,7 @@ or
 ```
 
 ## Release notes
+* 1.2.9 : add jmcnetResourceBundle.getLocaleString to get a template String replaced with context
 * 1.2.8 : fix some log verbosity
 
 ## More Information

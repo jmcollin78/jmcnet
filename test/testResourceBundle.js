@@ -72,6 +72,14 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
             expect(localFile).to.not.exist;
             done();
         });
+        
+        it('should be possible to get a template String replaced from bundle named test2', function (done) {
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'fr');
+            expect(localFile).to.exist;
+            var replacedValue = jmcnetResourceBundle.getLocalString(localFile, 'templatedString', { val1 : 'val1', val2 : 12});
+            expect(replacedValue).to.equal('The templated String with val1=val1 and val2=12.');
+            done();
+        });
     });
 
     describe('check automatic reload Test :', function () {

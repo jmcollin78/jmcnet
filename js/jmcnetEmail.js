@@ -21,6 +21,9 @@ function Email(from, to, subject, text, htmlText) {
     this.subject = subject;
     this.text = text;
     this.html = htmlText;
+    this.cc = undefined;
+    this.bcc = undefined;
+    this.replyTo = undefined;
     this.attachments = [];
 }
 

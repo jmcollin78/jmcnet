@@ -142,13 +142,13 @@ function loadEmailTemplateFromFile(templateName, subjectTemplate, bodyFileName) 
 /**
  * An EJS filter to display a date correctly
  */
-ejs.filters.toLocaleDateString = function(d) {
+Date.prototype.toLocaleDateString = function toLocaleDateString() {
     log.trace('Into ejs.filters.toLocaleDateString');
     if (gLang === 'fr') {
-        return d.format('shortDateFr');
+        return this.format('shortDateFr');
     }
     else {
-        return d.format('shortDateEn');
+        return this.format('shortDateEn');
     }
 };
 

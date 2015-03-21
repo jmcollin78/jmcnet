@@ -103,7 +103,7 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
         var tpl;
         before(function (done) {
             jmcnetEmailTemplate.resetEmailTemplates();
-            tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%=: date | toLocaleDateString %>', 'body <%=body%>');
+            tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString() %>', 'body <%=body%>');
             done();
         });
         it('should be possible to render the subject and body', function (done) {

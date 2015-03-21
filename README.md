@@ -313,10 +313,20 @@ or
             expect(err).to.not.exist;
  });
 ```
-
+* <b><i>Format date String</i></b>
+ ```
+ tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString() %>', '...');
+ subject = tpl.renderSubject({
+            date: d,
+            body: 'This is the body of the mail'
+ }, 'fr');
+ expect(subject).to.equal('The date is 31/08/2014');
+ ```
+            
 ## Release notes
 * 1.2.9 : add jmcnetResourceBundle.getLocaleString to get a template String replaced with context
 * 1.2.8 : fix some log verbosity
+* 1.3.0 : update dependencies version and migrate to EJS V2
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

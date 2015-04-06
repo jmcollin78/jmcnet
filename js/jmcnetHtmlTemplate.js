@@ -20,7 +20,7 @@ var gLstTpl = {};
 function HtmlTemplate(templateName, template) {
     log.trace('Constructing a new HtmlTemplate');
     this.template = template;
-    this.initHtmlTemplate(templateName);
+    this.initHtmlTemplate(templateName, template);
 }
 
 HtmlTemplate.prototype.initHtmlTemplate = function (templateName, template) {

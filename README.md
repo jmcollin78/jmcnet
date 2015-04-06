@@ -336,7 +336,7 @@ or
 * 1.2.9 : add jmcnetResourceBundle.getLocaleString to get a template String replaced with context
 * 1.2.8 : fix some log verbosity
 * 1.3.0 : update dependencies version and migrate to EJS V2
-* 1.3.1 : add HtmlTemplate class as base class for EmailTemplate
+* 1.3.1, 1.3.2 : add HtmlTemplate class as base class for EmailTemplate
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

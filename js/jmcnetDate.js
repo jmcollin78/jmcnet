@@ -1,5 +1,7 @@
 'use strict';
 
+var log = require('log4js').getLogger('jmcnet.date');
+
 /*----------------------------------------------------------------------------------------*\
  * Commons Date manipulations functions                                                   *
 \*----------------------------------------------------------------------------------------*/
@@ -117,6 +119,18 @@ Date.prototype.format = function (mask, utc) {
     return dateFormat(this, mask, utc);
 };
 
+/**
+ * An helper to display a date correctly
+ */
+Date.prototype.toLocaleDateString = function toLocaleDateString(lang) {
+    log.trace('Into ejs.filters.toLocaleDateString');
+    if (lang === 'fr') {
+        return this.format('shortDateFr');
+    }
+    else {
+        return this.format('shortDateEn');
+    }
+};
 
 module.exports = {
     getDateHourMinuteNow : function() {

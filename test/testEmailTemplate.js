@@ -9,7 +9,7 @@
 /* Module dependencies */
 var expect = require('chai').expect; // jshint ignore:line
 var assert = require('assert'); // jshint ignore:line
-var log = require('log4js').getLogger('jmcnet.emailTemplate'),
+var log = require('log4js').getLogger('testu'),
     jmcnetEmail = require('../js/jmcnetEmail.js'),
     jmcnetEmailTemplate = require('../js/jmcnetEmailTemplate.js'),
     util = require('util');
@@ -29,6 +29,7 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
                 expect(tpl).to.exist;
 
             } catch (err) {
+                log.error('Error while loading EmailTemplate : err="%s"', util.inspect(err));
                 assert.fail('we should not be there');
             }
             expect(jmcnetEmailTemplate.getLstTemplates()).to.be.not.empty;
@@ -64,6 +65,7 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
                 expect(subject).to.equal('subject This is the title of the mail');
                 expect(body).to.equal('body This is the body of the mail');
             } catch (err) {
+                log.error('Error : "%s"', err);
                 assert.fail('we should not be there');
             }
             done();
@@ -103,7 +105,7 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
         var tpl;
         before(function (done) {
             jmcnetEmailTemplate.resetEmailTemplates();
-            tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString() %>', 'body <%=body%>');
+            tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString(lang) %>', 'body <%=body%>');
             done();
         });
         it('should be possible to render the subject and body', function (done) {
@@ -112,7 +114,8 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
             var d = new Date(Date.parse('2014-08-31'));
             subject = tpl.renderSubject({
                 date: d,
-                body: 'This is the body of the mail'
+                body: 'This is the body of the mail',
+                lang : 'fr'
             });
             expect(subject).to.equal('The date is 31/08/2014');
             subject = tpl.renderSubject({

@@ -1,7 +1,7 @@
 {
   "name": "jmcnet",
   "main": "./js/jmcnet.js",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "The JMCNet library ported to JS : send email, manage html email template, use .properties files, resource bundle for i18n and add some usefull date methods",
   "directories": {
     "test": "test"

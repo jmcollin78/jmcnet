@@ -315,11 +315,20 @@ or
 ```
 * <b><i>Format date String</i></b>
  ```
- tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString() %>', '...');
+ tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString(lang) %>', '...');
  subject = tpl.renderSubject({
             date: d,
             body: 'This is the body of the mail'
  }, 'fr');
+ expect(subject).to.equal('The date is 31/08/2014');
+ ```
+ or 
+ ```
+ subject = tpl.renderSubject({
+            date: d,
+            body: 'This is the body of the mail',
+            lang : 'fr'
+ });
  expect(subject).to.equal('The date is 31/08/2014');
  ```
             
@@ -327,6 +336,7 @@ or
 * 1.2.9 : add jmcnetResourceBundle.getLocaleString to get a template String replaced with context
 * 1.2.8 : fix some log verbosity
 * 1.3.0 : update dependencies version and migrate to EJS V2
+* 1.3.1 : add HtmlTemplate class as base class for EmailTemplate
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

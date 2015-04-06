@@ -6,33 +6,38 @@
 
 var
 // _ = require('lodash'),
-    fs = require('fs'),
+//    fs = require('fs'),
     log = require('log4js').getLogger('jmcnet.emailTemplate'),
     util = require('util'),
-    jmcnetException = require('../js/jmcnetException.js'),
+//    jmcnetException = require('../js/jmcnetException.js'),
+    jmcnetHtmlTemplate = require('../js/jmcnetHtmlTemplate.js'),
+    HtmlTemplate = jmcnetHtmlTemplate.HtmlTemplate,
     ejs = require('ejs');
-
-require('../js/jmcnetDate.js');
-
-var gLstMailTpl = {};
-var gLang = 'fr';
 
 /**
  * Construct a new EmailTemplate from a templateName, a subject template name and a bodyTemplate
  */
 function EmailTemplate(templateName, subjectTemplate, bodyTemplate) {
-    log.trace('Constructing a new template "%s"', templateName);
+    log.trace('Constructing a new EmailTemplate "%s"', util.inspect(this)/*, templateName*/);
+    HtmlTemplate.call(this, templateName, bodyTemplate);
+
     this.subjectTemplate = subjectTemplate;
     this.bodyTemplate = bodyTemplate;
+    log.trace('this is "%s"',util.inspect(this));
+
+    if (! this.initTemplate) log.error('Pas de initTemplate');
     this.initTemplate(templateName);
 }
 
+util.inherits(EmailTemplate, HtmlTemplate);
+/*EmailTemplate.prototype = new HtmlTemplate();
+EmailTemplate.prototype.constructor = EmailTemplate;*/
+
+
 EmailTemplate.prototype.initTemplate = function (templateName) {
-    log.trace('Initializing the template "%s"', templateName);
+    log.trace('Initializing the EmailTemplate "%s"', templateName);
+    this.initHtmlTemplate(templateName);
     if (this.subjectTemplate) this.subjectCompile = ejs.compile(this.subjectTemplate);
-    if (this.bodyTemplate)    this.bodyCompile = ejs.compile(this.bodyTemplate);
-    gLstMailTpl[templateName] = this;
-    log.trace('Template list is now "%s"', util.inspect(gLstMailTpl));
     return this;
 };
 
@@ -43,7 +48,7 @@ EmailTemplate.prototype.initTemplate = function (templateName) {
  * @return the String containing the rendered subject
  */
 EmailTemplate.prototype.renderSubject = function (context, lang) {
-    if (lang) gLang = lang;
+    if (lang) context.lang = lang;
     return this.subjectCompile(context);
 };
 
@@ -54,8 +59,7 @@ EmailTemplate.prototype.renderSubject = function (context, lang) {
  * @return the String containing the rendered subject
  */
 EmailTemplate.prototype.renderBody = function (context, lang) {
-    if (lang) gLang = lang;
-    return this.bodyCompile(context);
+    return this.render(context, lang);
 };
 
 /**
@@ -104,21 +108,8 @@ EmailTemplate.prototype.setSubjectTemplate = function(subjectTemplate) {
  * Sets the body template
  */
 EmailTemplate.prototype.setBodyTemplate = function(bodyTemplate) {
-    this.bodyTemplate = bodyTemplate;
-    if (bodyTemplate) this.bodyCompile = ejs.compile(this.bodyTemplate);
+    this.setTemplate(bodyTemplate);
 };
-
-function getEmailTemplate(templateName) {
-    return gLstMailTpl[templateName];
-}
-
-function getLstTemplates() {
-    return gLstMailTpl;
-}
-
-function resetEmailTemplates() {
-    gLstMailTpl = {};
-}
 
 /**
  * Create a new EmailTemplate from a filename containing the body
@@ -129,19 +120,14 @@ function resetEmailTemplates() {
  */
 function loadEmailTemplateFromFile(templateName, subjectTemplate, bodyFileName) {
     log.trace('Loading template "%s" from file "%s"', templateName, bodyFileName);
-    try {
-        var body = fs.readFileSync(bodyFileName, 'utf8');
-        body.replace(/\r/g, '');
-        return new EmailTemplate(templateName, subjectTemplate, body);
-    } catch (err) {
-        log.error('Impossible to load EmailTemplate "%s" from file "%s". Err is "%s"', templateName, bodyFileName, util.inspect(err));
-        throw new jmcnetException.TechnicalException(err.message, [bodyFileName]);
-    }
+    var eTpl = new EmailTemplate(templateName, subjectTemplate, undefined);
+    return eTpl.loadTemplateFromFile(bodyFileName);
 }
 
 /**
  * An EJS filter to display a date correctly
  */
+/*
 Date.prototype.toLocaleDateString = function toLocaleDateString() {
     log.trace('Into ejs.filters.toLocaleDateString');
     if (gLang === 'fr') {
@@ -152,10 +138,11 @@ Date.prototype.toLocaleDateString = function toLocaleDateString() {
     }
 };
 
+*/
 module.exports = {
     EmailTemplate: EmailTemplate,
     loadEmailTemplateFromFile: loadEmailTemplateFromFile,
-    getLstTemplates: getLstTemplates,
-    getEmailTemplate: getEmailTemplate,
-    resetEmailTemplates: resetEmailTemplates
+    getLstTemplates: jmcnetHtmlTemplate.getLstTemplates,
+    getEmailTemplate: jmcnetHtmlTemplate.getHtmlTemplate,
+    resetEmailTemplates: jmcnetHtmlTemplate.resetHtmlTemplates
 };

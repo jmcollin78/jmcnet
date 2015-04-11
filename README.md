@@ -408,7 +408,7 @@ This module provides very easy features to internationalize your template.
 * 1.2.8 : fix some log verbosity
 * 1.3.0 : update dependencies version and migrate to EJS V2
 * 1.3.1 - 1.3.3 : add HtmlTemplate class as base class for EmailTemplate
-* 1.4.0 - 1.4.1 : add i18n format functions
+* 1.4.0 - 1.4.2 : add i18n format functions
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

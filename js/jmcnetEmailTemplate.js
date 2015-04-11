@@ -47,7 +47,7 @@ EmailTemplate.prototype.initTemplate = function (templateName) {
  * @return the String containing the rendered subject
  */
 EmailTemplate.prototype.renderSubject = function (context) {
-    context['jmcnetI18n'] = jmcnetI18n;
+    context.jmcnetI18n = jmcnetI18n;
     return this.subjectCompile(context);
 };
 
@@ -57,7 +57,7 @@ EmailTemplate.prototype.renderSubject = function (context) {
  * @return the String containing the rendered subject
  */
 EmailTemplate.prototype.renderBody = function (context) {
-    context['jmcnetI18n'] = jmcnetI18n;
+    context.jmcnetI18n = jmcnetI18n;
     return this.render(context);
 };
 

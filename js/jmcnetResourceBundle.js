@@ -119,6 +119,11 @@ var checkReloadFile = function (bundleOptions, file) {
  * @return propertiesFile instance of PropertiesFile class or null is no file is found matching the locale
  */
 ResourceBundle.prototype.getLocaleFile = function (locale) {
+    if (!locale) locale = require('../js/jmcnetI18n.js').getLocale();
+    if (!locale) {
+        log.error('ResourceBundle : No locale defined while trying to access locale file');
+        return undefined;
+    }
     // try to return the first lang matching
     // First check the given locale
     var file = this.files[locale];
@@ -151,6 +156,7 @@ var getBundle = function (bundleBaseName) {
 };
 
 var getLocaleFile = function (bundleBaseName, locale) {
+    if (!locale) locale = require('../js/jmcnetI18n.js').getLocale();
     var bundle = getBundle(bundleBaseName);
     if (bundle) {
         return bundle.getLocaleFile(locale);

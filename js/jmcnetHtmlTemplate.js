@@ -10,6 +10,7 @@ var
     log = require('log4js').getLogger('jmcnet.htmlTemplate'),
     util = require('util'),
     jmcnetException = require('../js/jmcnetException.js'),
+    jmcnetI18n = require('../js/jmcnetI18n.js'),
     ejs = require('ejs');
 
 var gLstTpl = {};
@@ -38,8 +39,8 @@ HtmlTemplate.prototype.initHtmlTemplate = function (templateName, template) {
  * @param lang fr|en
  * @return the String containing the rendered subject
  */
-HtmlTemplate.prototype.render = function (context, lang) {
-    if (lang) context.lang = lang;
+HtmlTemplate.prototype.render = function (context) {
+    context.jmcnetI18n = jmcnetI18n;
     return this.bodyCompile(context);
 };
 

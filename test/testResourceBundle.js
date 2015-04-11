@@ -80,6 +80,15 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
             expect(replacedValue).to.equal('The templated String with val1=val1 and val2=12.');
             done();
         });
+        
+        it('should be possible to get a template String replaced from bundle named test2 with globale locale', function (done) {
+            jmcnetI18n.setLocale('fr');
+            var localFile = jmcnetResourceBundle.getLocaleFile('test1');
+            expect(localFile).to.exist;
+            var replacedValue = jmcnetI18n.getLocaleString(localFile, 'templatedString', { val1 : 'val1', val2 : 12});
+            expect(replacedValue).to.equal('The templated String with val1=val1 and val2=12.');
+            done();
+        });
     });
 
     describe('check automatic reload Test :', function () {

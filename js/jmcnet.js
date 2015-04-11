@@ -6,7 +6,8 @@ var jmcnetDate = require('./jmcnetDate.js'),
     jmcnetEmailTemplate = require('./jmcnetEmailTemplate.js'),
     jmcnetEmail = require('./jmcnetEmail.js'),
     jmcnetConfig = require('./jmcnetConfig.js'),
-    jmcnetResourceBundle = require('./jmcnetResourceBundle.js');
+    jmcnetResourceBundle = require('./jmcnetResourceBundle.js'),
+    jmcnetI18n = require('./jmcnetI18n.js');
 
 module.exports = {
     date : jmcnetDate,
@@ -15,5 +16,6 @@ module.exports = {
     htmlTemplate : jmcnetHtmlTemplate,
     emailTemplate : jmcnetEmailTemplate,
     email : jmcnetEmail,
-    resourceBundle : jmcnetResourceBundle
+    resourceBundle : jmcnetResourceBundle,
+    i18n : jmcnetI18n
 };

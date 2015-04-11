@@ -8,7 +8,8 @@ It provides utility libraries for :
 * <i>jmcnet-email</i> - <b>email management</b> : add attachment, deals with image attachment, automatically create attachment from html text,
 * <i>jmcnet-emailTemplate</i> - <b>templated email features</b> : cooperate with email features above to send beautiful html templated emails,
 * <i>jmcnet-exception</i> - <b>exception feature</b> : the base exception used with all modules above,
-* <i>jmcnet-resourceBundle</i> - <b>Localized resource bundle</b> : dealing with localized resources bundle for i18n.
+* <i>jmcnet-resourceBundle</i> - <b>Localized resource bundle</b> : dealing with localized resources bundle for i18n,
+* <i>jmcnet-i18n</i> - <b>Internalization (i18n) format functions helper</b> : format String, date, currency and float values considering a locale
 
 
 ## Prerequisites
@@ -196,7 +197,7 @@ var rsc = new jmcnet.resourceBundle.ResourceBundle('./path/to/resources/', 'test
  
  // Templating
  var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'fr');
- var replacedValue = jmcnetResourceBundle.getLocalString(
+ var replacedValue = jmcnetResourceBundle.getLocaleString(
      localFile,
      'templatedString',
      { val1 : 'val1', val2 : 12});
@@ -331,12 +332,83 @@ or
  });
  expect(subject).to.equal('The date is 31/08/2014');
  ```
-            
+
+### Internationalization (i18n) features (jmcnet-i18n)
+This module provides very easy features to internationalize your template.
+
+* <b><i>Set locale</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ i18n.setLocale('fr');
+ expect(i18n.getLocale()).to.equal('fr');
+
+ ```
+ 
+* <b><i>Set currency symbol</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ i18n.setCurrencySymbol('€');
+ expect(i18n.getCurrencySymbol()).to.equal('€');
+ 
+ ```
+ 
+* <b><i>Extract locale from an Http request</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ i18n.getLocaleFromRequest(req); // req.headers.accept-language = 'fr ...'
+ expect(i18n.getLocale()).to.equal('fr');
+ 
+ ```
+ 
+* <b><i>Format a currency value in cents</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ i18n.setLocale('fr').setCurrency('€');
+ expect(jmcnetI18n.formatCurrency(123456, false)).to.equal('1.234,56&nbsp;€');
+ expect(jmcnetI18n.formatCurrency(123456, true)).to.equal('1.234,56');
+ expect(jmcnetI18n.formatCurrency(123400, true)).to.equal('1.234,00');
+ expect(jmcnetI18n.formatCurrency(1234, false)).to.equal('12,34&nbsp;€');
+ expect(jmcnetI18n.formatCurrency(1200, true)).to.equal('12,00');
+ 
+ ```
+ 
+* <b><i>Format a float value in cents</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ i18n.setLocale('fr');
+ expect(jmcnetI18n.formatFloatCent(123456, false)).to.equal('1.234,56');
+ expect(jmcnetI18n.formatFloatCent(123456, true)).to.equal('1.234,56');
+ expect(jmcnetI18n.formatFloatCent(123400, false)).to.equal('1.234');
+ expect(jmcnetI18n.formatFloatCent(123400, true)).to.equal('1.234,00');
+ expect(jmcnetI18n.formatFloatCent(1234, false)).to.equal('12,34');
+ 
+  ```
+
+* <b><i>Format a percent value in cents</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ i18n.setLocale('fr');
+ expect(jmcnetI18n.formatPercent(1234, false)).to.equal('12,34 %');
+ expect(jmcnetI18n.formatPercent(1234, true)).to.equal('12,34 %');
+ expect(jmcnetI18n.formatPercent(1200, false)).to.equal('12 %');
+ expect(jmcnetI18n.formatPercent(1200, true)).to.equal('12,00 %');
+ 
+  ```
+  
+* <b><i>Format a date</i></b>
+ ```
+ var i18n = jmcnet.jmcnetI18n;
+ var d = new Date(Date.parse('2015-04-11'));
+ expect(jmcnetI18n.formatDate(d)).to.equal('11/04/2015');
+ 
+  ```
+
 ## Release notes
 * 1.2.9 : add jmcnetResourceBundle.getLocaleString to get a template String replaced with context
 * 1.2.8 : fix some log verbosity
 * 1.3.0 : update dependencies version and migrate to EJS V2
 * 1.3.1 - 1.3.3 : add HtmlTemplate class as base class for EmailTemplate
+* 1.4.0 : add i18n format functions
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

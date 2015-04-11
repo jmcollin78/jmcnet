@@ -11,8 +11,7 @@ var
     jmcnetException = require('../js/jmcnetException.js'),
     util = require('util'),
     fs = require('fs'),
-    PropertiesFile = require('java-properties').PropertiesFile,
-    ejs = require('ejs');
+    PropertiesFile = require('java-properties').PropertiesFile;
 
 var gBundles = {};
 var gDefaultOptions = {
@@ -135,7 +134,7 @@ ResourceBundle.prototype.getLocaleFile = function (locale) {
     }
     if (file) {
         log.trace('We have found a file "%s". Check if we need to reload it', file.filePath);
-        return checkReloadFile(this.options, file);
+        return checkReloadFile(this.options, file).props;
     } else {
         log.warn('No bundle file for locale "%s" for bundle "%s"', locale, this.bundleBaseName);
         return undefined;
@@ -154,27 +153,15 @@ var getBundle = function (bundleBaseName) {
 var getLocaleFile = function (bundleBaseName, locale) {
     var bundle = getBundle(bundleBaseName);
     if (bundle) {
-        var file = bundle.getLocaleFile(locale);
-        return file ? file.props : undefined;
+        return bundle.getLocaleFile(locale);
     } else {
         log.warn('No bundle named "%s" is loaded. You must first load the ResourceBundle with new ResourceBundle()', bundleBaseName);
         return undefined;
     }
 };
 
-/**
- * Replace template value in String with context values. The template String comes from a file.get(key)
- * @return String the replaced String or null if key is not present in file
- */
-var getLocaleString = function (file, key, context) {
-    var keyValue = file.get(key, undefined);
-    if (!keyValue) return null;
-    return ejs.render(keyValue, context);
-};
-
 module.exports = {
     ResourceBundle: ResourceBundle,
     getBundle: getBundle,
-    getLocaleFile : getLocaleFile,
-    getLocalString : getLocaleString
+    getLocaleFile : getLocaleFile
 };

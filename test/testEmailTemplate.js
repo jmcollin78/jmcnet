@@ -12,6 +12,7 @@ var assert = require('assert'); // jshint ignore:line
 var log = require('log4js').getLogger('testu'),
     jmcnetEmail = require('../js/jmcnetEmail.js'),
     jmcnetEmailTemplate = require('../js/jmcnetEmailTemplate.js'),
+    jmcnetI18n = require('../js/jmcnetI18n.js'),
     util = require('util');
 
 // The tests
@@ -105,29 +106,30 @@ describe('<JMCNet EmailTemplate Unit Test>', function () {
         var tpl;
         before(function (done) {
             jmcnetEmailTemplate.resetEmailTemplates();
-            tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= date.toLocaleDateString(lang) %>', 'body <%=body%>');
+            tpl = new jmcnetEmailTemplate.EmailTemplate('template1', 'The date is <%= jmcnetI18n.formatDate(date) %>', 'body <%=body%>');
             done();
         });
         it('should be possible to render the subject and body', function (done) {
             log.debug('Test Render subject with date');
             var subject;
             var d = new Date(Date.parse('2014-08-31'));
+            jmcnetI18n.setLocale('fr');
             subject = tpl.renderSubject({
                 date: d,
-                body: 'This is the body of the mail',
-                lang : 'fr'
+                body: 'This is the body of the mail'
             });
             expect(subject).to.equal('The date is 31/08/2014');
             subject = tpl.renderSubject({
                 date: d,
                 body: 'This is the body of the mail'
-            }, 'fr');
+            });
             expect(subject).to.equal('The date is 31/08/2014');
+            jmcnetI18n.setLocale('en');
             subject = tpl.renderSubject({
                 date: d,
                 body: 'This is the body of the mail'
-            }, 'en');
-            expect(subject).to.equal('The date is 08/31/2014');
+            });
+            expect(subject).to.equal('The date is 08-31-2014');
             done();
         });
     });

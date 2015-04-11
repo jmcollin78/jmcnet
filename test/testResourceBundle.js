@@ -6,7 +6,7 @@
  */
 var expect = require('chai').expect; // jshint ignore:line
 var jmcnetResourceBundle = require('../js/jmcnetResourceBundle.js'),
-//    jmcnetException = require('../js/jmcnetException.js'),
+    jmcnetI18n = require('../js/jmcnetI18n.js'),
     log = require('log4js').getLogger('jmcnet.resourceBundle'),
 //    util = require('util'),
     fs = require('fs')
@@ -76,7 +76,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
         it('should be possible to get a template String replaced from bundle named test2', function (done) {
             var localFile = jmcnetResourceBundle.getLocaleFile('test1', 'fr');
             expect(localFile).to.exist;
-            var replacedValue = jmcnetResourceBundle.getLocalString(localFile, 'templatedString', { val1 : 'val1', val2 : 12});
+            var replacedValue = jmcnetI18n.getLocaleString(localFile, 'templatedString', { val1 : 'val1', val2 : 12});
             expect(replacedValue).to.equal('The templated String with val1=val1 and val2=12.');
             done();
         });
@@ -93,7 +93,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
         });
         it('should be possible to reload file if it has change', function (done) {
             log.debug('Test reload file on file change');
-            expect(rsc.getLocaleFile('fr').props.get('w3')).to.not.exist;
+            expect(rsc.getLocaleFile('fr').get('w3')).to.not.exist;
 
             var fileName = './test/resources/test1/test1_fr.properties';
             var stats = fs.statSync(fileName);
@@ -116,7 +116,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
                 reloadOnChange: false,
                 checkReloadTimeSec: 0 // always check
             });
-            expect(rsc.getLocaleFile('fr').props.get('w3')).to.not.exist;
+            expect(rsc.getLocaleFile('fr').get('w3')).to.not.exist;
 
             var fileName = './test/resources/test1/test1_fr.properties';
             var stats = fs.statSync(fileName);
@@ -134,7 +134,7 @@ describe('<JMCNet ResourceBundle Unit Test>', function () {
                 reloadOnChange: true,
                 checkReloadTimeSec: 1 // always check
             });
-            expect(rsc.getLocaleFile('fr').props.get('w3')).to.not.exist;
+            expect(rsc.getLocaleFile('fr').get('w3')).to.not.exist;
 
             var fileName = './test/resources/test1/test1_fr.properties';
             var stats = fs.statSync(fileName);

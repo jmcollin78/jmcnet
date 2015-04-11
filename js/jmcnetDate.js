@@ -1,10 +1,10 @@
 'use strict';
 
-var log = require('log4js').getLogger('jmcnet.date');
+//var log = require('log4js').getLogger('jmcnet.date');
 
-/*----------------------------------------------------------------------------------------*\
- * Commons Date manipulations functions                                                   *
-\*----------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------*\
+ * Commons Date manipulations functions                  *
+\*-------------------------------------------------------*/
 
 var dateFormat = (function () {
     var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
@@ -88,8 +88,9 @@ var dateFormat = (function () {
 // Some common format strings
 dateFormat.masks = {
     'default':      'ddd mmm dd yyyy HH:MM:ss',
-    shortDateFr:    'dd/mm/yyyy',
-    shortDateEn:      'mm/dd/yyyy',
+    'shortDate-fr':    'dd/mm/yyyy',
+    'shortDate-en':    'mm-dd-yyyy',
+    'shortDate-de':    'dd.mm.yyyy',
     mediumDate:     'mmm d, yyyy',
     longDate:       'mmmm d, yyyy',
     fullDate:       'dddd, mmmm d, yyyy',
@@ -117,19 +118,6 @@ dateFormat.i18n = {
 // For convenience...
 Date.prototype.format = function (mask, utc) {
     return dateFormat(this, mask, utc);
-};
-
-/**
- * An helper to display a date correctly
- */
-Date.prototype.toLocaleDateString = function toLocaleDateString(lang) {
-    log.trace('Into ejs.filters.toLocaleDateString');
-    if (lang === 'fr') {
-        return this.format('shortDateFr');
-    }
-    else {
-        return this.format('shortDateEn');
-    }
 };
 
 module.exports = {

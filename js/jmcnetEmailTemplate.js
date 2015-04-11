@@ -9,7 +9,7 @@ var
 //    fs = require('fs'),
     log = require('log4js').getLogger('jmcnet.emailTemplate'),
     util = require('util'),
-//    jmcnetException = require('../js/jmcnetException.js'),
+    jmcnetI18n = require('../js/jmcnetI18n.js'),
     jmcnetHtmlTemplate = require('../js/jmcnetHtmlTemplate.js'),
     HtmlTemplate = jmcnetHtmlTemplate.HtmlTemplate,
     ejs = require('ejs');
@@ -44,22 +44,21 @@ EmailTemplate.prototype.initTemplate = function (templateName) {
 /**
  * Renders the subjects template for an EmailTemplate
  * @param context an object describing the context
- * @param lang fr|en
  * @return the String containing the rendered subject
  */
-EmailTemplate.prototype.renderSubject = function (context, lang) {
-    if (lang) context.lang = lang;
+EmailTemplate.prototype.renderSubject = function (context) {
+    context['jmcnetI18n'] = jmcnetI18n;
     return this.subjectCompile(context);
 };
 
 /**
  * Renders the body template for an EmailTemplate
  * @param context an object describing the context
- * @param lang fr|en
  * @return the String containing the rendered subject
  */
-EmailTemplate.prototype.renderBody = function (context, lang) {
-    return this.render(context, lang);
+EmailTemplate.prototype.renderBody = function (context) {
+    context['jmcnetI18n'] = jmcnetI18n;
+    return this.render(context);
 };
 
 /**
@@ -69,10 +68,10 @@ EmailTemplate.prototype.renderBody = function (context, lang) {
  * @param lang 'fr' or 'en',
  * @param cb the callback function once email has been send. This callback takes err and info in arguments
  */
-EmailTemplate.prototype.sendEmail = function(email, context, lang, cb) {
-    log.trace('Sending the email "%s" with template "%s", context "%s" and lang="%s"', util.inspect(email), util.inspect(this), util.inspect(context), lang);
-    email.subject = this.renderSubject(context, lang);
-    email.html = this.renderBody(context, lang);
+EmailTemplate.prototype.sendEmail = function(email, context, cb) {
+    log.trace('Sending the email "%s" with template "%s", context "%s" and lang="%s"', util.inspect(email), util.inspect(this), util.inspect(context), jmcnetI18n.getLocale());
+    email.subject = this.renderSubject(context);
+    email.html = this.renderBody(context);
     log.debug('Sending an email with subject="%s" and html="%s"', email.subject, email.html);
     email.sendEmail(cb);
 };
@@ -84,12 +83,12 @@ EmailTemplate.prototype.sendEmail = function(email, context, lang, cb) {
  * @param lang 'fr' or 'en',
  * @param cb the callback function once email has been send. This callback takes err and info in arguments
  */
-EmailTemplate.prototype.sendEmail2Pass = function(email, context, lang, cb) {
-    log.trace('Sending the email "%s" with template "%s", context "%s" and lang="%s" with 2 pass', util.inspect(email), util.inspect(this), util.inspect(context), lang);
-    var tmp = this.renderSubject(context, lang);
+EmailTemplate.prototype.sendEmail2Pass = function(email, context, cb) {
+    log.trace('Sending the email "%s" with template "%s", context "%s" and lang="%s" with 2 pass', util.inspect(email), util.inspect(this), util.inspect(context), jmcnetI18n.getLocale());
+    var tmp = this.renderSubject(context);
     log.trace('subjectPass1="%s"', tmp);
     email.subject = ejs.render(tmp, context);
-    tmp = this.renderBody(context, lang);
+    tmp = this.renderBody(context);
     log.trace('htmlPass1="%s"', tmp);
     email.html = ejs.render(tmp, context);
     log.debug('Sending an email with subject="%s" and html="%s"', email.subject, email.html);

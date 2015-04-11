@@ -17,7 +17,7 @@ var gCurrencySymbol='€';
 var gFallbackLocale='fr';
 
 // Loading locale resources
-var i18nRsc = new jmcnetResourceBundle.ResourceBundle('./resources', 'jmcnetI18n', { reloadOnChange : false });
+var i18nRsc = new jmcnetResourceBundle.ResourceBundle(__dirname+'/../resources', 'jmcnetI18n', { reloadOnChange : false });
 i18nRsc.loadFiles();
 
 /**

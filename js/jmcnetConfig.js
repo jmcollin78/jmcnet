@@ -163,6 +163,26 @@ function getBoolean(key, defaultValue) {
     return gConfig.getBoolean(key, defaultValue);
 }
 
+function getLast(key, defaultValue) {
+    if (checkFileChanges()) {
+        log.info('We must reload the config');
+        loadConfig(gDir, gOptions);
+    }
+    var values = gConfig.get(key, defaultValue);
+    if (_.isArray(values)) return values[values.length - 1];
+    else return values;
+}
+
+function getFirst(key, defaultValue) {
+    if (checkFileChanges()) {
+        log.info('We must reload the config');
+        loadConfig(gDir, gOptions);
+    }
+    var values = gConfig.get(key, defaultValue);
+    if (_.isArray(values)) return values[0];
+    else return values;
+}
+
 function getKeys() { return gConfig.getKeys(); }
 
 function addListener(callback) { gListeners.push(callback); }
@@ -176,6 +196,8 @@ module.exports = {
     getFloat : getFloat,
     getBoolean : getBoolean,
     getOptions: getOptions,
+    getFirst : getFirst,
+    getLast : getLast,
     checkFileChanges : checkFileChanges,
     addListener : addListener
 };

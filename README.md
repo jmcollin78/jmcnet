@@ -105,7 +105,7 @@ throw new jmcnet.exception.FunctionalException('The functional error message', [
 A module containing date helpers functions like :
 
  * <b><i>jmcnet.date.getDateHourMinuteNow()</i></b> : gives the current date limited to minutes informations (skip seconds and millisec),
- * <b><i>jmcnet.date.getDateNow()</i></b> : gives the current date limited to date informations (skip hours, muinutes, seconds and millisec),
+ * <b><i>jmcnet.date.getDateToday()</i></b> : gives the current date limited to date informations (skip hours, muinutes, seconds and millisec),
  * <b><i>jmcnet.date.addDays(date, nbDays)</i></b> : gives back a date which is date in argument with days augmented by nbDays,
  * <b><i>jmcnet.date.addWeeks(date, nbWeeks)</i></b> : gives back a date which is date in argument with weeks augmented by nbWeeks,
  * <b><i>jmcnet.date.addMonth(date, nbMonths)</i></b> : gives back a date which is date in argument with month augmented by nbMonths,
@@ -127,6 +127,8 @@ A module for dealing with configuration files in the .properties style (like in 
  * <b><i>jmcnet.config.get(key)</i></b> : get the value of a key
  * <b><i>jmcnet.config.getKeys()</i></b> : get all the properties keys
  * <b><i>jmcnet.config.addListener(callback)</i></b> : adds a listener to the configuration reloads. The callbacks are called upon a config reload 
+ * <b><i>jmcnet.config.getFirst(key, defaultValue)</i></b> : get the first properties value declared with the key 
+ * <b><i>jmcnet.config.getLast(key, defaultValue)</i></b> : get the last properties value declared with the key 
 
 ### Resource bundle for i18n .properties files (jmcnet-resourceBundle)
 A module for dealing with resource bundle files in the .properties style. A resource bundle is a set of files having the same base name, a .properties file extension. Each file contains key/value set with different translations for a same key.
@@ -409,6 +411,8 @@ This module provides very easy features to internationalize your template.
 * 1.3.0 : update dependencies version and migrate to EJS V2
 * 1.3.1 - 1.3.3 : add HtmlTemplate class as base class for EmailTemplate
 * 1.4.0 - 1.4.2 : add i18n format functions
+* 1.4.3 : add jmcnetConfig.getFirst and jmcnetConfig.getLast in case of multivalued properties
+* 1.4.4 : update dependencies
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

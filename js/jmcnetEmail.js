@@ -116,10 +116,12 @@ FakeTransport.prototype.resetSentEmails = function() {
     this.sentEmails = [];
 };
 
-var setSmtpTransport = function (smtpServerName, port, login, password, timeout, secure) {
-    log.trace('Setting smtpTransport');
+var setSmtpTransport = function (smtpServerName, port, login, password, timeout, secure, debug) {
     if (!timeout) timeout = 5000;
-    if (!secure) secure = true;
+    secure = secure === undefined ? true:secure;
+    debug = debug === undefined ? false:debug;
+    
+    log.info('jmcnetEmail : Setting smtpTransport to "%s:xxxxx%s:%p?secure=%d&debug=%d&timeout=%d',login, smtpServerName, port, secure, debug, timeout );
     gTransporter = nodemailer.createTransport({
         port: port,
         host: smtpServerName,
@@ -129,7 +131,7 @@ var setSmtpTransport = function (smtpServerName, port, login, password, timeout,
             pass: password
         },
         connectionTimeout: timeout,
-        debug: false
+        debug: debug
     });
 };
 

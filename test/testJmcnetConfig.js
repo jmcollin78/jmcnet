@@ -266,10 +266,20 @@ describe('<JMCNet Config Unit Test>', function () {
             jmcnetConfig.loadConfig('./test/config/');
             done();
         });
-        it('should get a boolean value', function() {
-            expect(jmcnetConfig.get('sub2.override.value')).to.eql(['value sub2', 'overriden value']);
+        it('should get a String value', function() {
+            expect(jmcnetConfig.getAll('sub2.override.value')).to.eql(['value sub2', 'overriden value']);
             expect(jmcnetConfig.getFirst('sub2.override.value')).to.eql('value sub2');
             expect(jmcnetConfig.getLast('sub2.override.value')).to.eql('overriden value');
+            expect(jmcnetConfig.getLast('sub2.override.value')).to.eql(jmcnetConfig.get('sub2.override.value'));
+        });
+        
+        it('should get a Boolean value', function() {
+            expect(jmcnetConfig.getAll('sub2.override.boolean.value')).to.eql(['true', 'false']);
+            expect(jmcnetConfig.getFirst('sub2.override.boolean.value')).to.eql('true');
+            expect(jmcnetConfig.getLast('sub2.override.boolean.value')).to.eql('false');
+            expect(jmcnetConfig.getLast('sub2.override.boolean.value')).to.eql(''+jmcnetConfig.get('sub2.override.boolean.value'));
+            // should be ok when java-properties from mattdsteele has been released
+            expect(jmcnetConfig.getBoolean('sub2.override.boolean.value')).to.be.false;
         });
     });
 });

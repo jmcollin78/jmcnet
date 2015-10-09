@@ -121,7 +121,7 @@ var setSmtpTransport = function (smtpServerName, port, login, password, timeout,
     secure = secure === undefined ? true:secure;
     debug = debug === undefined ? false:debug;
     
-    log.info('jmcnetEmail : Setting smtpTransport to "%s:xxxxx%s:%p?secure=%d&debug=%d&timeout=%d',login, smtpServerName, port, secure, debug, timeout );
+    log.info('jmcnetEmail : Setting smtpTransport to "%s:xxxxx@%s:%d?secure=%d&debug=%d&timeout=%d"',login, smtpServerName, port, secure, debug, timeout );
     gTransporter = nodemailer.createTransport({
         port: port,
         host: smtpServerName,

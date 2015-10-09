@@ -278,7 +278,6 @@ describe('<JMCNet Config Unit Test>', function () {
             expect(jmcnetConfig.getFirst('sub2.override.boolean.value')).to.eql('true');
             expect(jmcnetConfig.getLast('sub2.override.boolean.value')).to.eql('false');
             expect(jmcnetConfig.getLast('sub2.override.boolean.value')).to.eql(''+jmcnetConfig.get('sub2.override.boolean.value'));
-            // should be ok when java-properties from mattdsteele has been released
             expect(jmcnetConfig.getBoolean('sub2.override.boolean.value')).to.be.false;
         });
     });

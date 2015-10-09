@@ -413,6 +413,7 @@ This module provides very easy features to internationalize your template.
 * 1.4.0 - 1.4.2 : add i18n format functions
 * 1.4.3 : add jmcnetConfig.getFirst and jmcnetConfig.getLast in case of multivalued properties
 * 1.4.4 : update dependencies
+* 1.4.5 - 1.4.6 : update java-properties from @mattdsteele and nodemailer in 1.8.0
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

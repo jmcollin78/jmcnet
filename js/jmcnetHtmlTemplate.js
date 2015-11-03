@@ -27,7 +27,7 @@ function HtmlTemplate(templateName, template) {
 HtmlTemplate.prototype.initHtmlTemplate = function (templateName, template) {
     log.trace('Initializing the HtmlTemplate "%s"', templateName);
     this.templateName = templateName;
-    if (this.template) this.bodyCompile = ejs.compile(this.template);
+    if (this.template) this.bodyCompile = ejs.compile(this.template, { compileDebug : true, client : true });
     gLstTpl[templateName] = this;
     log.trace('Template list is now "%s"', util.inspect(gLstTpl));
     return this;
@@ -61,7 +61,7 @@ HtmlTemplate.prototype.loadTemplateFromFile = function (bodyFileName) {
  */
 HtmlTemplate.prototype.setTemplate = function (template) {
     this.template = template;
-    if (template) this.bodyCompile = ejs.compile(this.template);
+    if (template) this.bodyCompile = ejs.compile(this.template, { compileDebug : true });
 };
 
 function getHtmlTemplate(templateName) {
@@ -94,5 +94,5 @@ module.exports = {
     loadHtmlTemplateFromFile: loadHtmlTemplateFromFile,
     getLstTemplates: getLstTemplates,
     getHtmlTemplate: getHtmlTemplate,
-    resetHtmlTemplates: resetHtmlTemplates
+    resetHtmlTemplates: resetHtmlTemplates,
 };

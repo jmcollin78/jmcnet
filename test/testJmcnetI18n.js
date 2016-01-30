@@ -39,6 +39,12 @@ describe('<JMCNet I18N Unit Test>', function () {
             expect(jmcnetI18n.formatCurrency(123400, true)).to.equal('1.234,00');
             expect(jmcnetI18n.formatCurrency(1234, false)).to.equal('12,34&nbsp;€');
             expect(jmcnetI18n.formatCurrency(1200, true)).to.equal('12,00');
+			
+            expect(jmcnetI18n.formatCurrency(123456, false, true)).to.equal('1234,56&nbsp;€');
+            expect(jmcnetI18n.formatCurrency(123456, true, true)).to.equal('1234,56');
+            expect(jmcnetI18n.formatCurrency(123400, true, true)).to.equal('1234,00');
+            expect(jmcnetI18n.formatCurrency(1234, false, true)).to.equal('12,34&nbsp;€');
+            expect(jmcnetI18n.formatCurrency(1200, true, true)).to.equal('12,00');
         });
 
         it('should be possible to format float value', function () {
@@ -69,10 +75,15 @@ describe('<JMCNet I18N Unit Test>', function () {
         });
 
         it('should be possible to format currency', function () {
-            expect(jmcnetI18n.formatCurrency(123456, false)).to.equal('$&nbsp;1,234.56');
-            expect(jmcnetI18n.formatCurrency(123456, true)).to.equal('1,234.56');
-            expect(jmcnetI18n.formatCurrency(123400, true)).to.equal('1,234.00');
-            expect(jmcnetI18n.formatCurrency(1234, false)).to.equal('$&nbsp;12.34');
+            expect(jmcnetI18n.formatCurrency(123456, false, false)).to.equal('$&nbsp;1,234.56');
+            expect(jmcnetI18n.formatCurrency(123456, true, false)).to.equal('1,234.56');
+            expect(jmcnetI18n.formatCurrency(123400, true, false)).to.equal('1,234.00');
+            expect(jmcnetI18n.formatCurrency(1234, false, false)).to.equal('$&nbsp;12.34');
+			
+            expect(jmcnetI18n.formatCurrency(123456, false, true)).to.equal('$&nbsp;1234.56');
+            expect(jmcnetI18n.formatCurrency(123456, true, true)).to.equal('1234.56');
+            expect(jmcnetI18n.formatCurrency(123400, true, true)).to.equal('1234.00');
+            expect(jmcnetI18n.formatCurrency(1234, false, true)).to.equal('$&nbsp;12.34');
         });
 
         it('should be possible to format float value', function () {
@@ -107,6 +118,11 @@ describe('<JMCNet I18N Unit Test>', function () {
             expect(jmcnetI18n.formatCurrency(123456, true)).to.equal('1.234,56');
             expect(jmcnetI18n.formatCurrency(123400, true)).to.equal('1.234,00');
             expect(jmcnetI18n.formatCurrency(1234, false)).to.equal('12,34&nbsp;DM-');
+			
+            expect(jmcnetI18n.formatCurrency(123456, false, true)).to.equal('1234,56&nbsp;DM-');
+            expect(jmcnetI18n.formatCurrency(123456, true, true)).to.equal('1234,56');
+            expect(jmcnetI18n.formatCurrency(123400, true, true)).to.equal('1234,00');
+            expect(jmcnetI18n.formatCurrency(1234, false, true)).to.equal('12,34&nbsp;DM-');
         });
 
         it('should be possible to format float value', function () {

@@ -5,19 +5,21 @@
  * @author : Jean-Marc COLLIN
  */
 
-var 
-    jmcnetResourceBundle = require('./jmcnetResourceBundle.js'),
-    _ = require('lodash'),
-    util = require('util'),
-    ejs = require('ejs');
+var
+	jmcnetResourceBundle = require('./jmcnetResourceBundle.js'),
+	_ = require('lodash'),
+	util = require('util'),
+	ejs = require('ejs');
 var log = require('log4js').getLogger('jmcnet.i18n');
 
-var gLocale='fr'; // the global locale value
-var gCurrencySymbol='€';
-var gFallbackLocale='fr';
+var gLocale = 'fr'; // the global locale value
+var gCurrencySymbol = '€';
+var gFallbackLocale = 'fr';
 
 // Loading locale resources
-var i18nRsc = new jmcnetResourceBundle.ResourceBundle(__dirname+'/../resources', 'jmcnetI18n', { reloadOnChange : false });
+var i18nRsc = new jmcnetResourceBundle.ResourceBundle(__dirname + '/../resources', 'jmcnetI18n', {
+	reloadOnChange: false
+});
 i18nRsc.loadFiles();
 
 /**
@@ -25,50 +27,50 @@ i18nRsc.loadFiles();
  * @
  */
 var getLocaleFromRequest = function (req) {
-    log.trace('Try to get Accept-Language from request. request.headers is "%s"', util.inspect(req.headers));
-    var ret = req.headers['accept-language'];
-    log.trace('Accepted language are : %s', ret);
-    if (ret) {
-        var idx = ret.indexOf(';');
-        if (idx !== -1) {
-            ret = ret.substring(0, idx);
-        }
-        if (_.contains(ret, 'en')) ret = 'en';
-        else if (_.contains(ret, 'de')) ret = 'de';
-        else ret = gFallbackLocale;
-        log.trace('We get a locale from the Accept-Language request : "%s"', ret);
-    } else ret = gFallbackLocale;
-    log.debug('getStringLocale : returns "%s"', ret);
-    gLocale = ret;
-    return ret;
+	log.trace('Try to get Accept-Language from request. request.headers is "%s"', util.inspect(req.headers));
+	var ret = req.headers['accept-language'];
+	log.trace('Accepted language are : %s', ret);
+	if (ret) {
+		var idx = ret.indexOf(';');
+		if (idx !== -1) {
+			ret = ret.substring(0, idx);
+		}
+		if (_.contains(ret, 'en')) ret = 'en';
+		else if (_.contains(ret, 'de')) ret = 'de';
+		else ret = gFallbackLocale;
+		log.trace('We get a locale from the Accept-Language request : "%s"', ret);
+	} else ret = gFallbackLocale;
+	log.debug('getStringLocale : returns "%s"', ret);
+	gLocale = ret;
+	return ret;
 };
 
 /**
  * Set the locale used by following functions
  * @param locale String the locale
  */
-var setLocale = function(locale) {
-    log.debug('Setting current locale with "%s"', locale);
-    gLocale = locale;
-    return this;
+var setLocale = function (locale) {
+	log.debug('Setting current locale with "%s"', locale);
+	gLocale = locale;
+	return this;
 };
 
-var getLocale = function() {
-    return gLocale;
+var getLocale = function () {
+	return gLocale;
 };
 
 /**
  * Set the currency symbol used by following functions
  * @param currency symbol String the locale
  */
-var setCurrencySymbol = function(cs) {
-    log.debug('Setting current currency symbol with "%s"', cs);
-    gCurrencySymbol = cs;
-    return this;
+var setCurrencySymbol = function (cs) {
+	log.debug('Setting current currency symbol with "%s"', cs);
+	gCurrencySymbol = cs;
+	return this;
 };
 
-var getCurrencySymbol = function() {
-    return gCurrencySymbol;
+var getCurrencySymbol = function () {
+	return gCurrencySymbol;
 };
 
 /**
@@ -76,9 +78,9 @@ var getCurrencySymbol = function() {
  * @return String the replaced String or null if key is not present in file
  */
 var getLocaleString = function (file, key, context) {
-    var keyValue = file.get(key, undefined);
-    if (!keyValue) return null;
-    return ejs.render(keyValue, context);
+	var keyValue = file.get(key, undefined);
+	if (!keyValue) return null;
+	return ejs.render(keyValue, context);
 };
 
 /**
@@ -88,24 +90,28 @@ var getLocaleString = function (file, key, context) {
  * @example : extractFloatNumber(1234.56) -> { mills : 1, units : 234, cents : 56 }
  */
 var extractFloatNumber = function extractFloatNumber(value) {
-    
+
 	var units = 0;
-	if (value >= 0)	units = Math.floor(value / 100);
+	if (value >= 0) units = Math.floor(value / 100);
 	else units = Math.ceil(value / 100);
-	
-	var cents = Math.abs(value - (units*100));
-	
-	var mills=0;
+
+	var cents = Math.abs(value - (units * 100));
+
+	var mills = 0;
 	if (units >= 0) mills = Math.floor(units / 1000);
-    else mills = Math.ceil(units / 1000);
-	
-	units = units - (mills*1000);
-	
+	else mills = Math.ceil(units / 1000);
+
+	units = units - (mills * 1000);
+
 	if (mills < 0) {
 		units = -units;
 	}
-	
-	return { mills : mills, units : units, cents : cents};
+
+	return {
+		mills: mills,
+		units: units,
+		cents: cents
+	};
 };
 
 /**
@@ -114,7 +120,7 @@ var extractFloatNumber = function extractFloatNumber(value) {
  */
 var formatPad2Digits = function formatPad2Digits(str) {
 	if (str.length >= 2) return str;
-	if (str.length === 1) return '0'+str;
+	if (str.length === 1) return '0' + str;
 	if (str.length === 0) return '00';
 };
 
@@ -124,8 +130,8 @@ var formatPad2Digits = function formatPad2Digits(str) {
  */
 var formatPad3Digits = function formatPad3Digits(str) {
 	if (str.length >= 3) return str;
-	if (str.length === 2) return '0'+str;
-	if (str.length === 1) return '00'+str;
+	if (str.length === 2) return '0' + str;
+	if (str.length === 1) return '00' + str;
 	if (str.length === 0) return '000';
 };
 
@@ -133,57 +139,88 @@ var formatPad3Digits = function formatPad3Digits(str) {
  * Formats a Number into currency using the current locale
  * @param currencyValue Number The value to format
  * @param withoutEuroSign boolean if true, removes the euro sign to formatted string
+ * @param flatNumberFormat boolean if true, removes the . or , separator betweeen mills and unit
  * @return the format currency value
  * @see setLocale, getLocaleFromRequest, setCurrencySymbol
  */
-var formatCurrency = function formatCurrency(currencyValue, withoutCurrencySign) {
-    var messages = i18nRsc.getLocaleFile(gLocale);
+var formatCurrency = function formatCurrency(currencyValue, withoutCurrencySign, flatNumberFormat) {
+	var messages = i18nRsc.getLocaleFile(gLocale);
 
-    if (currencyValue === undefined || currencyValue === null || isNaN(currencyValue)) return '';
-    if (withoutCurrencySign === undefined || withoutCurrencySign === null) withoutCurrencySign = false;
+	if (currencyValue === undefined || currencyValue === null || isNaN(currencyValue)) return '';
+	if (withoutCurrencySign === undefined || withoutCurrencySign === null) withoutCurrencySign = false;
+	if (flatNumberFormat === undefined || flatNumberFormat === null) flatNumberFormat = false;
 
-    var extract = extractFloatNumber(currencyValue);
-    var mills = extract.mills,
-        euros = extract.units,
-        cents = extract.cents;
-    var millsStr, eurosStr, centsStr;
+	var extract = extractFloatNumber(currencyValue);
+	var mills = extract.mills,
+		euros = extract.units,
+		cents = extract.cents;
+	var millsStr, eurosStr, centsStr;
 
-    if (mills !== 0) {
-        millsStr = '' + mills;
-        eurosStr = formatPad3Digits('' + euros);
-        centsStr = formatPad2Digits('' + cents);
+	if (mills !== 0) {
+		millsStr = '' + mills;
+		eurosStr = formatPad3Digits('' + euros);
+		centsStr = formatPad2Digits('' + cents);
 
-        if (withoutCurrencySign)
-            return getLocaleString(messages, 'jmcnet.currency-milliers.withoutCurrencySign.format', {
-                    'currencySymbol' : gCurrencySymbol,
-                    'millsStr': millsStr,
-                    'unitsStr': eurosStr,
-                    'centsStr': centsStr
-                });
-        else
-            return  getLocaleString(messages, 'jmcnet.currency-milliers.format', {
-                    'currencySymbol' : gCurrencySymbol,
-                    'millsStr': millsStr,
-                    'unitsStr': eurosStr,
-                    'centsStr': centsStr
-                });
-    } else {
-        eurosStr = '' + euros;
-        centsStr = formatPad2Digits('' + cents);
-        if (withoutCurrencySign)
-            return getLocaleString(messages, 'jmcnet.currency.withoutCurrencySign.format', {
-                    'currencySymbol' : gCurrencySymbol,
-                    'unitsStr': eurosStr,
-                    'centsStr': centsStr
-                });
-        else {
-            return getLocaleString(messages, 'jmcnet.currency.format', {
-                    'currencySymbol' : gCurrencySymbol,
-                    'unitsStr': eurosStr,
-                    'centsStr': centsStr
-                });
-        }
-    }
+		if (withoutCurrencySign)
+			if (flatNumberFormat)
+				return getLocaleString(messages, 'jmcnet.currency-milliers.withoutCurrencySign.flat.format', {
+					'currencySymbol': gCurrencySymbol,
+					'millsStr': millsStr,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+			else
+				return getLocaleString(messages, 'jmcnet.currency-milliers.withoutCurrencySign.format', {
+					'currencySymbol': gCurrencySymbol,
+					'millsStr': millsStr,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+		else
+			if (flatNumberFormat)
+				return getLocaleString(messages, 'jmcnet.currency-milliers.flat.format', {
+					'currencySymbol': gCurrencySymbol,
+					'millsStr': millsStr,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+			else
+				return getLocaleString(messages, 'jmcnet.currency-milliers.format', {
+					'currencySymbol': gCurrencySymbol,
+					'millsStr': millsStr,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+	} else {
+		eurosStr = '' + euros;
+		centsStr = formatPad2Digits('' + cents);
+		if (withoutCurrencySign)
+			if (flatNumberFormat)
+				return getLocaleString(messages, 'jmcnet.currency.withoutCurrencySign.flat.format', {
+					'currencySymbol': gCurrencySymbol,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+			else
+				return getLocaleString(messages, 'jmcnet.currency.withoutCurrencySign.format', {
+					'currencySymbol': gCurrencySymbol,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+		else
+			if (flatNumberFormat)
+				return getLocaleString(messages, 'jmcnet.currency.flat.format', {
+					'currencySymbol': gCurrencySymbol,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+			else
+				return getLocaleString(messages, 'jmcnet.currency.format', {
+					'currencySymbol': gCurrencySymbol,
+					'unitsStr': eurosStr,
+					'centsStr': centsStr
+				});
+	}
 };
 
 /**
@@ -192,46 +229,49 @@ var formatCurrency = function formatCurrency(currencyValue, withoutCurrencySign)
  * @param forceDeci boolean if true, force the decimal part to be added (eventually with 0)
  * @see setLocale, getLocaleFromRequest
  */
-var formatFloatCent = function(floatCentValue, forceDeci) {
-    if (_.isNull(floatCentValue) || _.isUndefined(floatCentValue) || _.isNaN(floatCentValue)) return '';
-    if (forceDeci === undefined || forceDeci === null) forceDeci = false;
-    
-    var messages = i18nRsc.getLocaleFile(gLocale);
+var formatFloatCent = function (floatCentValue, forceDeci) {
+	if (_.isNull(floatCentValue) || _.isUndefined(floatCentValue) || _.isNaN(floatCentValue)) return '';
+	if (forceDeci === undefined || forceDeci === null) forceDeci = false;
 
-    var extract = extractFloatNumber(floatCentValue);
-    var mills=extract.mills, units=extract.units, cents=extract.cents;
+	var messages = i18nRsc.getLocaleFile(gLocale);
 
-    if (cents !== 0) forceDeci = true;
-    
-    var millsStr, unitsStr, centsStr;
+	var extract = extractFloatNumber(floatCentValue);
+	var mills = extract.mills,
+		units = extract.units,
+		cents = extract.cents;
 
-    if (mills !== 0) {
-        millsStr=''+mills;
-        unitsStr=formatPad3Digits(''+units);
-        centsStr=formatPad2Digits(''+cents);
-        if (forceDeci)
-            return  getLocaleString(messages, 'jmcnet.floatNumber-milliers.format', {
-                    'millsStr' : millsStr,
-                    'unitsStr' : unitsStr,
-                    'centsStr' : centsStr });
-        else 
-            return  getLocaleString(messages, 'jmcnet.floatNumber-milliers.withoutDecimal.format',
-                 {
-                    'millsStr' : millsStr,
-                    'unitsStr' : unitsStr
-                 });
-    }
-    else {
-        unitsStr=''+units;
-        centsStr=formatPad2Digits(''+cents);
-        if (forceDeci)
-            return  getLocaleString(messages, 'jmcnet.floatNumber.format', {
-                    'unitsStr' : unitsStr,
-                    'centsStr' : centsStr
-                 });
-        else
-            return getLocaleString(messages, 'jmcnet.floatNumber.withoutDecimal.format', { 'unitsStr' : unitsStr });
-    }
+	if (cents !== 0) forceDeci = true;
+
+	var millsStr, unitsStr, centsStr;
+
+	if (mills !== 0) {
+		millsStr = '' + mills;
+		unitsStr = formatPad3Digits('' + units);
+		centsStr = formatPad2Digits('' + cents);
+		if (forceDeci)
+			return getLocaleString(messages, 'jmcnet.floatNumber-milliers.format', {
+				'millsStr': millsStr,
+				'unitsStr': unitsStr,
+				'centsStr': centsStr
+			});
+		else
+			return getLocaleString(messages, 'jmcnet.floatNumber-milliers.withoutDecimal.format', {
+				'millsStr': millsStr,
+				'unitsStr': unitsStr
+			});
+	} else {
+		unitsStr = '' + units;
+		centsStr = formatPad2Digits('' + cents);
+		if (forceDeci)
+			return getLocaleString(messages, 'jmcnet.floatNumber.format', {
+				'unitsStr': unitsStr,
+				'centsStr': centsStr
+			});
+		else
+			return getLocaleString(messages, 'jmcnet.floatNumber.withoutDecimal.format', {
+				'unitsStr': unitsStr
+			});
+	}
 };
 
 /**
@@ -240,29 +280,29 @@ var formatFloatCent = function(floatCentValue, forceDeci) {
  * @param forceDeci boolean if true force the decimal part to be present eventually with 0
  * @return the value formatted according to current locale and the '%' symbol
  */
-var formatPercent = function(floatCentValue, forceDeci) {
-    var value = formatFloatCent(floatCentValue, forceDeci) + ' %';
-    return value;
+var formatPercent = function (floatCentValue, forceDeci) {
+	var value = formatFloatCent(floatCentValue, forceDeci) + ' %';
+	return value;
 };
 
 /**
  * An helper to display a date correctly
  */
 var formatDate = function formatDate(d) {
-    return d.format('shortDate-'+gLocale);
+	return d.format('shortDate-' + gLocale);
 };
 
 module.exports = {
-    getLocaleFromRequest: getLocaleFromRequest,
-    setLocale : setLocale,
-    getLocale : getLocale,
-    setCurrencySymbol : setCurrencySymbol,
-    getCurrencySymbol : getCurrencySymbol,
-    formatCurrency : formatCurrency,
-    formatDate : formatDate,
-    formatPad2Digits : formatPad2Digits,
-    formatPad3Digits : formatPad3Digits,
-    formatFloatCent : formatFloatCent,
-    formatPercent : formatPercent,
-    getLocaleString : getLocaleString
+	getLocaleFromRequest: getLocaleFromRequest,
+	setLocale: setLocale,
+	getLocale: getLocale,
+	setCurrencySymbol: setCurrencySymbol,
+	getCurrencySymbol: getCurrencySymbol,
+	formatCurrency: formatCurrency,
+	formatDate: formatDate,
+	formatPad2Digits: formatPad2Digits,
+	formatPad3Digits: formatPad3Digits,
+	formatFloatCent: formatFloatCent,
+	formatPercent: formatPercent,
+	getLocaleString: getLocaleString
 };

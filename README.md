@@ -366,9 +366,12 @@ This module provides very easy features to internationalize your template.
  ```
  var i18n = jmcnet.jmcnetI18n;
  i18n.setLocale('fr').setCurrency('€');
- expect(jmcnetI18n.formatCurrency(123456, false)).to.equal('1.234,56&nbsp;€');
- expect(jmcnetI18n.formatCurrency(123456, true)).to.equal('1.234,56');
- expect(jmcnetI18n.formatCurrency(123400, true)).to.equal('1.234,00');
+ expect(jmcnetI18n.formatCurrency(123456, false, false)).to.equal('1.234,56&nbsp;€');
+ expect(jmcnetI18n.formatCurrency(123456, false, true)).to.equal('1234,56&nbsp;€');
+ expect(jmcnetI18n.formatCurrency(123456, true, false)).to.equal('1.234,56');
+ expect(jmcnetI18n.formatCurrency(123456, true, true)).to.equal('1234,56');
+ expect(jmcnetI18n.formatCurrency(123400, true, false)).to.equal('1.234,00');
+ expect(jmcnetI18n.formatCurrency(123400, true, true)).to.equal('1234,00');
  expect(jmcnetI18n.formatCurrency(1234, false)).to.equal('12,34&nbsp;€');
  expect(jmcnetI18n.formatCurrency(1200, true)).to.equal('12,00');
  
@@ -415,6 +418,7 @@ This module provides very easy features to internationalize your template.
 * 1.4.4 : update dependencies
 * 1.4.5 - 1.4.6 : update java-properties from @mattdsteele and nodemailer in 1.8.0
 * 1.4.7 - 1.4.8 : update java-properties and update dependencies
+* 1.4.8 : add flat format for currency numbers in i18n
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

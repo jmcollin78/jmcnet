@@ -148,5 +148,11 @@ module.exports = {
         var date = new Date(now);
         date.setFullYear(date.getFullYear()+nbYear);
         return date;
-    }
+    },
+	getLastMonday: function( date ) {
+		var day = date.getDay() || 7;  
+		if( day !== 1 ) 
+			date.setHours(-24 * (day - 1)); 
+		return date;
+	}
 };

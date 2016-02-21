@@ -418,7 +418,8 @@ This module provides very easy features to internationalize your template.
 * 1.4.4 : update dependencies
 * 1.4.5 - 1.4.6 : update java-properties from @mattdsteele and nodemailer in 1.8.0
 * 1.4.7 - 1.4.8 : update java-properties and update dependencies
-* 1.4.8 : add flat format for currency numbers in i18n
+* 1.4.9 : add flat format for currency numbers in i18n
+* 1.5.0 : add getLastMonday to get the last monday of a date
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

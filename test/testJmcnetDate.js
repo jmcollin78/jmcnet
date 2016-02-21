@@ -134,4 +134,28 @@ describe('<JMCNet Date Unit Test>', function () {
             done();
         });
     });
+	
+	describe('getMonday', function(){
+		it('Should be possible to get the last monday of a sunday date', function(){
+			var now = new Date(2016, 1, 21); // Feb 21, 2016
+			var d = jmcDate.getLastMonday(now);
+			expect(d.getDate()).to.equal(15);
+			expect(d.getMonth()).to.equal(1);
+			expect(d.getFullYear()).to.equal(2016);
+		});
+		it('Should be possible to get the last monday of a monday date', function(){
+			var now = new Date(2016, 1, 22); // Mon Feb 22, 2016
+			var d = jmcDate.getLastMonday(now);
+			expect(d.getDate()).to.equal(22);
+			expect(d.getMonth()).to.equal(1);
+			expect(d.getFullYear()).to.equal(2016);
+		});
+		it('Should be possible to get the last monday of a end of year date', function(){
+			var now = new Date(2016, 0, 2); // Mon Jan 2, 2016
+			var d = jmcDate.getLastMonday(now);
+			expect(d.getDate()).to.equal(28);
+			expect(d.getMonth()).to.equal(11);
+			expect(d.getFullYear()).to.equal(2015);
+		});
+	});
 });

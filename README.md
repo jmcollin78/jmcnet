@@ -420,6 +420,7 @@ This module provides very easy features to internationalize your template.
 * 1.4.7 - 1.4.8 : update java-properties and update dependencies
 * 1.4.9 : add flat format for currency numbers in i18n
 * 1.5.0 : add getLastMonday to get the last monday of a date
+* 1.6.0 : add internationalization for date.format()
 
 ## More Information
 * Visit us at [Clouderial.com](http://clouderial.com/).

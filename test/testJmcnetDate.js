@@ -5,12 +5,13 @@
  */
 var expect = require('chai').expect; // jshint ignore:line
 var jmcDate = require('../js/jmcnetDate.js'),
+	jmcI18n = require('../js/jmcnetI18n.js'),
     log = require('log4js').getLogger('jmcnet.date')
 //    ,_ = require('lodash')
     ;
 
 // The tests
-describe('<JMCNet Date Unit Test>', function () {
+describe.only('<JMCNet Date Unit Test>', function () {
     describe('getDateHourMinuteNow', function() {
         it('should be possible to create a date with dateHourMinute only', function(done){
             var d = jmcDate.getDateHourMinuteNow();
@@ -156,6 +157,35 @@ describe('<JMCNet Date Unit Test>', function () {
 			expect(d.getDate()).to.equal(28);
 			expect(d.getMonth()).to.equal(11);
 			expect(d.getFullYear()).to.equal(2015);
+		});
+	});
+	
+	describe('formatDate i18n', function(){
+		it('should be possible to get the date labels in french', function(){
+			var d = new Date('2016-05-09');
+			jmcI18n.setLocale('fr_FR');
+			expect(d.format('ddd')).to.equal('Lun');
+			expect(d.format('dddd')).to.equal('Lundi');
+			expect(d.format('mmm')).to.equal('Mai');
+			expect(d.format('mmmm')).to.equal('Mai');
+		});
+		
+		it('should be possible to get the date labels in English', function(){
+			var d = new Date('2016-05-09');
+			jmcI18n.setLocale('en_En');
+			expect(d.format('ddd')).to.equal('Mon');
+			expect(d.format('dddd')).to.equal('Monday');
+			expect(d.format('mmm')).to.equal('May');
+			expect(d.format('mmmm')).to.equal('May');
+		});
+		
+		it('should be possible to get the date labels in Deutsch', function(){
+			var d = new Date('2016-05-09');
+			jmcI18n.setLocale('de');
+			expect(d.format('ddd')).to.equal('Mon');
+			expect(d.format('dddd')).to.equal('Montag');
+			expect(d.format('mmm')).to.equal('Mai');
+			expect(d.format('mmmm')).to.equal('Mai');
 		});
 	});
 });

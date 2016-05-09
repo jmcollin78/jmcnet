@@ -5,6 +5,7 @@
 /*-------------------------------------------------------*\
  * Commons Date manipulations functions                  *
 \*-------------------------------------------------------*/
+var jmcnetI18n = require('./jmcnetI18n.js');
 
 var dateFormat = (function () {
     var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
@@ -38,6 +39,11 @@ var dateFormat = (function () {
             mask = mask.slice(4);
             utc = true;
         }
+		
+		var localNames;
+		if (jmcnetI18n.getLocale().indexOf('fr') !== -1) localNames = dF.i18n.fr;
+		else if (jmcnetI18n.getLocale().indexOf('de') !== -1) localNames = dF.i18n.de;
+		else localNames = dF.i18n.default;
 
         var _ = utc ? 'getUTC' : 'get',
             d = date[_ + 'Date'](),
@@ -52,12 +58,12 @@ var dateFormat = (function () {
             flags = {
                 d:    d,
                 dd:   pad(d),
-                ddd:  dF.i18n.dayNames[D],
-                dddd: dF.i18n.dayNames[D + 7],
+                ddd:  localNames.dayNames[D],
+                dddd: localNames.dayNames[D + 7],
                 m:    m + 1,
                 mm:   pad(m + 1),
-                mmm:  dF.i18n.monthNames[m],
-                mmmm: dF.i18n.monthNames[m + 12],
+                mmm:  localNames.monthNames[m],
+                mmmm: localNames.monthNames[m + 12],
                 yy:   String(y).slice(2),
                 yyyy: y,
                 h:    H % 12 || 12,
@@ -105,14 +111,36 @@ dateFormat.masks = {
 
 // Internationalization strings
 dateFormat.i18n = {
-    dayNames: [
-        'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-    ],
-    monthNames: [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-    ]
+	'default' : {
+		dayNames: [
+			'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+			'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+		],
+		monthNames: [
+			'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+			'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+		]
+	},
+	'fr' : {
+		dayNames: [
+			'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam',
+			'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'
+		],
+		monthNames: [
+			'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc',
+			'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+		]
+	},
+	'de' : {
+		dayNames: [
+			'Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre', 'Sam',
+			'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'
+		],
+		monthNames: [
+			'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez',
+			'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'July', 'August', 'September', 'Oktober', 'November', 'Dezember'
+		]
+	}
 };
 
 // For convenience...

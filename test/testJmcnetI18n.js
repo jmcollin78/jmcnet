@@ -39,12 +39,14 @@ describe('<JMCNet I18N Unit Test>', function () {
             expect(jmcnetI18n.formatCurrency(123400, true)).to.equal('1.234,00');
             expect(jmcnetI18n.formatCurrency(1234, false)).to.equal('12,34&nbsp;€');
             expect(jmcnetI18n.formatCurrency(1200, true)).to.equal('12,00');
+            expect(jmcnetI18n.formatCurrency(14, true)).to.equal('0,14');
 			
             expect(jmcnetI18n.formatCurrency(123456, false, true)).to.equal('1234,56&nbsp;€');
             expect(jmcnetI18n.formatCurrency(123456, true, true)).to.equal('1234,56');
             expect(jmcnetI18n.formatCurrency(123400, true, true)).to.equal('1234,00');
             expect(jmcnetI18n.formatCurrency(1234, false, true)).to.equal('12,34&nbsp;€');
             expect(jmcnetI18n.formatCurrency(1200, true, true)).to.equal('12,00');
+            expect(jmcnetI18n.formatCurrency(14, false, true)).to.equal('0,14&nbsp;€');
         });
 
         it('should be possible to format float value', function () {
@@ -53,6 +55,7 @@ describe('<JMCNet I18N Unit Test>', function () {
             expect(jmcnetI18n.formatFloatCent(123400, false)).to.equal('1.234');
             expect(jmcnetI18n.formatFloatCent(123400, true)).to.equal('1.234,00');
             expect(jmcnetI18n.formatFloatCent(1234, false)).to.equal('12,34');
+            expect(jmcnetI18n.formatFloatCent(14, false)).to.equal('0,14');
         });
 
         it('should be possible to format percent value', function () {
@@ -60,6 +63,8 @@ describe('<JMCNet I18N Unit Test>', function () {
             expect(jmcnetI18n.formatPercent(1234, true)).to.equal('12,34 %');
             expect(jmcnetI18n.formatPercent(1200, false)).to.equal('12 %');
             expect(jmcnetI18n.formatPercent(1200, true)).to.equal('12,00 %');
+            expect(jmcnetI18n.formatPercent(14, true)).to.equal('0,14 %');
+			expect(jmcnetI18n.formatPercent(14, false)).to.equal('0,14 %');
         });
 
         it('should be possible to format a date', function () {

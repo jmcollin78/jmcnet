@@ -11,7 +11,7 @@ var jmcDate = require('../js/jmcnetDate.js'),
     ;
 
 // The tests
-describe.only('<JMCNet Date Unit Test>', function () {
+describe('<JMCNet Date Unit Test>', function () {
     describe('getDateHourMinuteNow', function() {
         it('should be possible to create a date with dateHourMinute only', function(done){
             var d = jmcDate.getDateHourMinuteNow();

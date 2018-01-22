@@ -37,7 +37,7 @@
     "ejs": "^2.3.4",
     "grunt": "^0.4.5",
     "java-properties": "^0.2.9",
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.4",
     "log4js": "^0.6.27",
     "nodemailer": "^1.8.0"
   },

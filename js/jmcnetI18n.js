@@ -35,8 +35,8 @@ var getLocaleFromRequest = function (req) {
 		if (idx !== -1) {
 			ret = ret.substring(0, idx);
 		}
-		if (_.contains(ret, 'en')) ret = 'en';
-		else if (_.contains(ret, 'de')) ret = 'de';
+		if (_.includes(ret, 'en')) ret = 'en';
+		else if (_.includes(ret, 'de')) ret = 'de';
 		else ret = gFallbackLocale;
 		log.trace('We get a locale from the Accept-Language request : "%s"', ret);
 	} else ret = gFallbackLocale;
@@ -233,16 +233,16 @@ var formatFloatCent = function (floatCentValue, forceDeci) {
 	if (_.isNull(floatCentValue) || _.isUndefined(floatCentValue) || _.isNaN(floatCentValue)) return '';
 	if (forceDeci === undefined || forceDeci === null) forceDeci = false;
 
-	var messages = i18nRsc.getLocaleFile(gLocale);
+	let messages = i18nRsc.getLocaleFile(gLocale);
 
-	var extract = extractFloatNumber(floatCentValue);
-	var mills = extract.mills,
+	let extract = extractFloatNumber(floatCentValue);
+	let mills = extract.mills,
 		units = extract.units,
 		cents = extract.cents;
 
 	if (cents !== 0) forceDeci = true;
 
-	var millsStr, unitsStr, centsStr;
+	let millsStr, unitsStr, centsStr;
 
 	if (mills !== 0) {
 		millsStr = '' + mills;
@@ -292,6 +292,58 @@ var formatDate = function formatDate(d) {
 	return d.format('shortDate-' + gLocale);
 };
 
+/**
+ * A helper to display file volume correctly
+ */
+var formatFloatVolume = function formatFloatVolume(floatCentValue, forceDeci) {
+	if (_.isNil(floatCentValue) || _.isNaN(floatCentValue)) return '';
+	if (_.isNil(forceDeci)) forceDeci = false;
+	
+	var messages = i18nRsc.getLocaleFile(gLocale);
+
+	let cents = 0,
+		units;
+	let unit;
+	// Go
+	if (floatCentValue >= 1024 * 1024 * 1024) {
+		let v = floatCentValue / 1024 / 1024 / 1024;
+		units = Math.floor(v);
+		cents = Math.round((v - units) * 100);
+		unit = getLocaleString(messages, 'jmcnet.volume.gb');
+	} else
+	if (floatCentValue >= 1024 * 1024) {
+		let v = floatCentValue / 1024 / 1024;
+		units = Math.floor(v);
+		cents = Math.round((v - units) * 100);
+		unit = getLocaleString(messages, 'jmcnet.volume.mb');
+	} else
+	if (floatCentValue >= 1024) {
+		let v = floatCentValue / 1024;
+		units = Math.floor(v);
+		cents = Math.round((v - units) * 100);
+		unit = getLocaleString(messages, 'jmcnet.volume.kb');
+	} else {
+		units = floatCentValue;
+		cents = 0;
+		unit = getLocaleString(messages, 'jmcnet.volume.b');
+	}
+	var unitsStr, centsStr;
+
+	if (cents !== 0) forceDeci = true;
+
+	unitsStr = '' + units;
+	centsStr = formatPad2Digits('' + cents);
+	if (forceDeci)
+		return getLocaleString(messages, 'jmcnet.floatNumber.format', {
+			'unitsStr': unitsStr,
+			'centsStr': centsStr
+		}) + ' ' + unit;
+	else
+		return getLocaleString(messages, 'jmcnet.floatNumber.withoutDecimal.format', {
+			'unitsStr': unitsStr
+		}) + ' ' + unit;
+};
+
 module.exports = {
 	getLocaleFromRequest: getLocaleFromRequest,
 	setLocale: setLocale,
@@ -304,5 +356,6 @@ module.exports = {
 	formatPad3Digits: formatPad3Digits,
 	formatFloatCent: formatFloatCent,
 	formatPercent: formatPercent,
-	getLocaleString: getLocaleString
+	getLocaleString: getLocaleString,
+	formatFloatVolume: formatFloatVolume
 };

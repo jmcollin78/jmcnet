@@ -71,6 +71,19 @@ describe('<JMCNet I18N Unit Test>', function () {
             var d = new Date(Date.parse('2015-04-11'));
             expect(jmcnetI18n.formatDate(d)).to.equal('11/04/2015');
         });
+		
+		it('should be possible to format a volume value', function () {
+            expect(jmcnetI18n.formatFloatVolume(2, false)).to.equal('2 o');
+            expect(jmcnetI18n.formatFloatVolume(2, true)).to.equal('2,00 o');
+            expect(jmcnetI18n.formatFloatVolume(1234, false)).to.equal('1,21 Ko');
+            expect(jmcnetI18n.formatFloatVolume(1234, true)).to.equal('1,21 Ko');
+            expect(jmcnetI18n.formatFloatVolume(1024, false)).to.equal('1 Ko');
+            expect(jmcnetI18n.formatFloatVolume(1024, true)).to.equal('1,00 Ko');
+			
+            expect(jmcnetI18n.formatFloatVolume(1234567, false)).to.equal('1,18 Mo');
+            expect(jmcnetI18n.formatFloatVolume(1234567890, false)).to.equal('1,15 Go');
+            expect(jmcnetI18n.formatFloatVolume(523456789000, false)).to.equal('487,51 Go');
+        });
     });
 
     describe('English format', function () {
@@ -110,6 +123,21 @@ describe('<JMCNet I18N Unit Test>', function () {
             var d = new Date(Date.parse('2015-04-11'));
             expect(jmcnetI18n.formatDate(d)).to.equal('04-11-2015');
         });
+		
+				
+		it('should be possible to format a volume value', function () {
+            expect(jmcnetI18n.formatFloatVolume(2, false)).to.equal('2 b');
+            expect(jmcnetI18n.formatFloatVolume(2, true)).to.equal('2.00 b');
+            expect(jmcnetI18n.formatFloatVolume(1234, false)).to.equal('1.21 Kb');
+            expect(jmcnetI18n.formatFloatVolume(1234, true)).to.equal('1.21 Kb');
+            expect(jmcnetI18n.formatFloatVolume(1024, false)).to.equal('1 Kb');
+            expect(jmcnetI18n.formatFloatVolume(1024, true)).to.equal('1.00 Kb');
+			
+            expect(jmcnetI18n.formatFloatVolume(1234567, false)).to.equal('1.18 Mb');
+            expect(jmcnetI18n.formatFloatVolume(1234567890, false)).to.equal('1.15 Gb');
+            expect(jmcnetI18n.formatFloatVolume(523456789000, false)).to.equal('487.51 Gb');
+        });
+
     });
 
     describe('German format', function () {
@@ -149,5 +177,19 @@ describe('<JMCNet I18N Unit Test>', function () {
             var d = new Date(Date.parse('2015-04-11'));
             expect(jmcnetI18n.formatDate(d)).to.equal('11.04.2015');
         });
+		
+		it('should be possible to format a volume value', function () {
+            expect(jmcnetI18n.formatFloatVolume(2, false)).to.equal('2 b');
+            expect(jmcnetI18n.formatFloatVolume(2, true)).to.equal('2,00 b');
+            expect(jmcnetI18n.formatFloatVolume(1234, false)).to.equal('1,21 Kb');
+            expect(jmcnetI18n.formatFloatVolume(1234, true)).to.equal('1,21 Kb');
+            expect(jmcnetI18n.formatFloatVolume(1024, false)).to.equal('1 Kb');
+            expect(jmcnetI18n.formatFloatVolume(1024, true)).to.equal('1,00 Kb');
+			
+            expect(jmcnetI18n.formatFloatVolume(1234567, false)).to.equal('1,18 Mb');
+            expect(jmcnetI18n.formatFloatVolume(1234567890, false)).to.equal('1,15 Gb');
+            expect(jmcnetI18n.formatFloatVolume(523456789000, false)).to.equal('487,51 Gb');
+        });
+
     });
 });

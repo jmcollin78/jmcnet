@@ -1,13 +1,13 @@
 {
   "name": "jmcnet",
   "main": "./js/jmcnet.js",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "The JMCNet library ported to JS : send email, manage html email template, use .properties files, resource bundle for i18n and add some usefull date methods",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "grunt testu"
+    "test": "gulp testu"
   },
   "repository": {
     "type": "git",
@@ -34,24 +34,16 @@
   },
   "homepage": "https://github.com/jmcollin78/jmcnet",
   "dependencies": {
-    "ejs": "^2.3.4",
-    "grunt": "^0.4.5",
-    "java-properties": "^0.2.9",
-    "lodash": "^4.17.4",
-    "log4js": "^0.6.27",
-    "nodemailer": "^1.8.0"
+    "ejs": "*",
+    "java-properties": "*",
+    "lodash": "*",
+    "log4js": "*",
+    "nodemailer": "*"
   },
   "devDependencies": {
-    "chai": "^3.4.0",
-    "expect.js": "^0.3.1",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.11.3",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-env": "^0.4.4",
-    "grunt-exec": "^0.4.6",
-    "grunt-focus": "^0.1.1",
-    "grunt-mocha-test": "^0.12.7",
-    "load-grunt-tasks": "^3.3.0",
-    "mocha": "^2.3.3"
+    "chai": "*",
+    "expect.js": "*",
+    "mocha": "*",
+    "gulp": "*"
   }
 }

@@ -45,7 +45,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var now = jmcDate.getDateToday();
             var d = jmcDate.addDays(now, 1);
             log.debug('d + 1 day is "%s"', d);
-            expect(d.getTime()).to.be.greaterThan(now);
+            expect(d.getTime()).to.be.greaterThan(now.getTime());
             expect(d.getTime() - now).to.equal(86400000); // one day exactly
             done();
         });
@@ -54,7 +54,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var now = jmcDate.getDateToday();
             var d = jmcDate.addDays(now, -1);
             log.debug('d - 1 day is "%s"', d);
-            expect(d.getTime()).to.be.lessThan(now);
+            expect(d.getTime()).to.be.lessThan(now.getTime());
             expect(d.getTime() - now).to.equal(-86400000); // one day exactly
             done();
         });
@@ -63,7 +63,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var now = new Date(2014, 5, 30); // June 30, 2014
             var d = jmcDate.addDays(now, 1);
             log.debug('d + 1 day is "%s"', d);
-            expect(d.getTime()).to.be.greaterThan(now);
+            expect(d.getTime()).to.be.greaterThan(now.getTime());
             expect(d.getTime() - now).to.equal(86400000); // one day exactly
             expect(d.getMonth()).to.equal(6); // July
             expect(d.getDate()).to.equal(1);
@@ -77,7 +77,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var d = jmcDate.addWeeks(now, 1);
             var d2 = jmcDate.addDays(now, 7);
             log.debug('d + 1 week is "%s"', d);
-            expect(d.getTime()).to.be.greaterThan(now);
+            expect(d.getTime()).to.be.greaterThan(now.getTime());
             expect(d.getTime() - now).to.equal(7 * 86400000); // one week exactly
             expect(d.getTime()).to.equal(d2.getTime());
             done();
@@ -88,7 +88,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var d = jmcDate.addWeeks(now, -1);
             var d2 = jmcDate.addDays(now, -7);
             log.debug('d - 1 week is "%s"', d);
-            expect(d.getTime()).to.be.lessThan(now);
+            expect(d.getTime()).to.be.lessThan(now.getTime());
             expect(d.getTime() - now).to.equal(-7 * 86400000); // one week exactly
             expect(d.getTime()).to.equal(d2.getTime());
             done();
@@ -98,7 +98,7 @@ describe('<JMCNet Date Unit Test>', function () {
             var now = new Date(2014, 1, 28); // Feb 28, 2014
             var d = jmcDate.addWeeks(now, 2);
             log.debug('d + 2 weeks is "%s"', d);
-            expect(d.getTime()).to.be.at.least(now);
+            expect(d.getTime()).to.be.at.least(now.getTime());
             expect(d.getTime() - now).to.equal(14*86400000); // 2 weeks exactly
             expect(d.getMonth()).to.equal(2); // March
             expect(d.getDate()).to.equal(14);

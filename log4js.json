@@ -1,19 +1,17 @@
 {
-    "appenders": [
-        {
+    "appenders": {
+        "jmcnet": {
             "type": "file",
             "filename": "../logs/jmcnet.log",
             "maxLogSize": 20000000,
-            "backups": 3,
-            "category": [ "jmcnet", "testu" ]
+            "backups": 3
         },
-        {
-            "type": "console",
-            "category": "console"          
+        "console": {
+            "type": "console"
         }
-    ],
-    
-    "levels" : {
-        "jmcnet.exception": "TRACE"
-    }
+	},
+    "categories": {
+		"default": { "appenders": ["jmcnet"], "level": "DEBUG" },
+		"console": { "appenders": ["console"], "level": "ERROR" }
+	}
 }

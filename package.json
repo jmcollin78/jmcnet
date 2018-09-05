@@ -1,7 +1,7 @@
 {
   "name": "jmcnet",
   "main": "./js/jmcnet.js",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "The JMCNet library ported to JS : send email, manage html email template, use .properties files, resource bundle for i18n and add some usefull date methods",
   "directories": {
     "test": "test"
@@ -34,16 +34,16 @@
   },
   "homepage": "https://github.com/jmcollin78/jmcnet",
   "dependencies": {
-    "ejs": "*",
+    "ejs": "^2.6.1",
     "java-properties": "*",
-    "lodash": "*",
-    "log4js": "*",
-    "nodemailer": "*"
+    "lodash": "^4.17.10",
+    "log4js": "^3.0.5",
+    "nodemailer": "^4.6.8"
   },
   "devDependencies": {
     "chai": "*",
     "expect.js": "*",
-    "mocha": "*",
-    "gulp": "*"
+    "gulp": "^4.0.0",
+    "mocha": "^5.2.0"
   }
 }

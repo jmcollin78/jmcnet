@@ -25,8 +25,6 @@ var beep = function(){
     gutil.beep();
 };
 
-gulp.task('default', ['testu']);
-
 var setEnv = function (newEnv) {
     env({
         vars: {
@@ -38,20 +36,23 @@ var setEnv = function (newEnv) {
     environment = newEnv;
 };
 
-gulp.task('env-dev', function () {
+gulp.task('env-dev', function (done) {
     setEnv('development');
+	done();
 });
 
-gulp.task('env-test', function () {
+gulp.task('env-test', function (done) {
     setEnv('test');
+	done();
 });
 
-gulp.task('watchTestu', function () {
-    gulp.watch(_.union(paths.jsServer, paths.jsTestuPkg), ['jshintTestu', 'mochaTestu']);
+gulp.task('watchTestu', function (done) {
+    gulp.watch(_.union(paths.jsServer, paths.jsTestuPkg), { usePolling: true, interval: 100 }, 				gulp.series('jshintTestu', 'mochaTestu'));
+	done();
 });
 
 gulp.task('watchCoverage', function () {
-    gulp.watch(_.union(paths.jsServer, paths.jsTestuPkg), ['jshintTestu', 'openCoverage']);
+    gulp.watch(_.union(paths.jsServer, paths.jsTestuPkg), gulp.series('jshintTestu', 'openCoverage'));
 });
 
 gulp.task('jshintTestu', function(){
@@ -82,7 +83,7 @@ gulp.task('instanbul-pre-test', function(){
         .pipe(istanbul.hookRequire());
 });
 
-gulp.task('startCoverage', ['instanbul-pre-test'], function(){
+gulp.task('startCoverage', gulp.series('instanbul-pre-test', function(){
     return gulp.src(paths.jsTestuPkg)
     .pipe(mocha({timeout : 10000, reporter: 'spec', bail: argv.bail || false}))
     .on('error', beep)
@@ -92,18 +93,20 @@ gulp.task('startCoverage', ['instanbul-pre-test'], function(){
         reportOpts : { dir : './coverage' }
     }))
 	/*.pipe(istanbul.enforceThresholds({ thresholds: { global: 80 } }))*/;
-});
-
-gulp.task('openCoverage', ['cleanCoverage', 'startCoverage'], function(){
-    require('child_process').exec('google-chrome ./coverage/lcov-report/index.html', function (err, stdout, stderr) {
-    console.log(stdout);
-    console.log(stderr);
-  });
-});
+}));
 
 gulp.task('cleanCoverage', function(done){
     del('./coverage/', done);
 });
 
-gulp.task('testu', ['env-test', 'mochaTestu', 'watchTestu'], function () {});
-gulp.task('coverage', ['env-test', 'openCoverage'], function() {});
+gulp.task('openCoverage', gulp.series('cleanCoverage', 'startCoverage', function(){
+    require('child_process').exec('google-chrome ./coverage/lcov-report/index.html', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+}));
+
+gulp.task('testu', gulp.series('env-test', 'mochaTestu', 'watchTestu', function (done) { done();}));
+gulp.task('coverage', gulp.series('env-test', 'openCoverage', function(done) { done();}));
+
+gulp.task('default', gulp.series('testu'));

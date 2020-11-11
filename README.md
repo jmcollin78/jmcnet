@@ -18,10 +18,11 @@ It provides utility libraries for :
 ### Tools Prerequisites
 * NPM - Node.js package manage; should be installed when you install node.js.
 
-### Optional [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
-* Grunt - Download and Install [Grunt](http://gruntjs.com).
+### Optional [![Built with Gulp](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+* Gulp - Download and Install [Gulp](http://gruntjs.com).
 ```
-$ npm install -g grunt-cli
+$ npm install -g mocha
+$ gulp testu
 ```
 
 ## Additional Packages
@@ -41,21 +42,22 @@ The quickest way to get started with JMCNet Library is to fork the Github repo.
 $ [sudo] git fork git@github/jmcollin78/jmcnet.git
 $ cd jmcnet
 $ npm install
+$ npm install -g mocha
 ```
 
 We recommend using [Grunt](https://github.com/gruntjs/grunt-cli) to start the test :
 ```
-$ grunt testu
+$ gulp testu
 ```
 
 If grunt aborts because of JSHINT errors, these can be overridden with the `force` flag:
 ```
-$ grunt -f testu
+$ gulp -f testu
 ```
 
 Alternatively, when not using `grunt` you can run:
 ```
-$ node test
+$ npm test
 ```
 
 ## Troubleshooting
@@ -71,9 +73,9 @@ Sometimes you may find there is a weird error during install like npm's *Error: 
 $ npm update -g npm
 ```
 
-* Updating Grunt:
+* Updating Mocha:
 ```
-$ npm update -g grunt-cli
+$ npm update -g mocha
 ```
 
 #### Cleaning NPM

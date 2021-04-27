@@ -7,6 +7,11 @@
  */
 
 /* Module dependencies */
+const
+    log4js = require('log4js'),
+    jsonLayout = require('log4js-json-layout');
+log4js.addLayout('json', jsonLayout);
+
 var expect = require('chai').expect; // jshint ignore:line
 var assert = require('assert'); // jshint ignore:line
 var log = require('log4js').getLogger('testu'),

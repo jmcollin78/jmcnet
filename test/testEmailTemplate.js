@@ -6,6 +6,11 @@
  * Author : Jean-Marc Collin
  */
 
+ const
+    log4js = require('log4js'),
+    jsonLayout = require('log4js-json-layout');
+log4js.addLayout('json', jsonLayout);
+
 /* Module dependencies */
 var expect = require('chai').expect; // jshint ignore:line
 var assert = require('assert'); // jshint ignore:line

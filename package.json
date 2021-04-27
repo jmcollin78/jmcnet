@@ -37,8 +37,8 @@
     "ejs": "^2.6.1",
     "java-properties": "*",
     "lodash": "^4.17.11",
-    "log4js": "^3.0.6",
-    "log4js-json-layout": "^2.2.2",
+    "log4js": "^6.3.0",
+    "log4js-json-layout": "^2.2.3",
     "nodemailer": "^5.0.0"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 {
+    "disableClustering" : true,
     "appenders": {
         "jmcnet": {
             "type": "file",
@@ -7,11 +8,22 @@
             "backups": 3
         },
         "console": {
-            "type": "console"
+            "type": "console",
+            "layout": {
+                "type": "json",
+                "source": "app"
+            }
+        },
+        "stdout": {
+            "type": "stdout",
+            "layout": {
+              "type": "json",
+              "source": "app"
+            }
         }
 	},
     "categories": {
-		"default": { "appenders": ["jmcnet"], "level": "DEBUG" },
+		"default": { "appenders": ["jmcnet", "stdout"], "level": "DEBUG" },
 		"console": { "appenders": ["console"], "level": "ERROR" }
 	}
 }

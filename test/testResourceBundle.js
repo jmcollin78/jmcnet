@@ -4,6 +4,11 @@
 /**
  * Module dependencies.
  */
+ const
+    log4js = require('log4js'),
+    jsonLayout = require('log4js-json-layout');
+log4js.addLayout('json', jsonLayout);
+
 var expect = require('chai').expect; // jshint ignore:line
 var jmcnetResourceBundle = require('../js/jmcnetResourceBundle.js'),
     jmcnetI18n = require('../js/jmcnetI18n.js'),

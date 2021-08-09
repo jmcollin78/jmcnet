@@ -121,21 +121,25 @@ var setSmtpTransport = function (smtpServerName, port, login, password, timeout,
     secure = secure === undefined ? true:secure;
     debug = debug === undefined ? false:debug;
     
-    log.info('jmcnetEmail : Setting smtpTransport to "%s:xxxxx@%s:%d?secure=%d&debug=%d&timeout=%d"',login, smtpServerName, port, secure, debug, timeout );
-    gTransporter = nodemailer.createTransport({
+    let config={
         port: port,
         host: smtpServerName,
         secure: secure,
-        auth: {
-            user: login,
-            pass: password
-        },
         connectionTimeout: timeout,
         debug: debug,
         tls: {
             rejectUnauthorized: false
         }
-    });
+    }
+    if (login !== null && password !== null) {
+        config.auth={
+            user: login,
+            pass: password
+        };
+        log.info('jmcnetEmail : Setting smtpTransport to [AUTH] "%s:xxxxx@%s:%d?secure=%d&debug=%d&timeout=%d"',login, smtpServerName, port, secure, debug, timeout );
+    }
+    else log.info('jmcnetEmail : Setting smtpTransport to [NOAUTH] "%s:%d?secure=%d&debug=%d&timeout=%d"', smtpServerName, port, secure, debug, timeout );
+    gTransporter = nodemailer.createTransport(config);
 };
 
 module.exports = {

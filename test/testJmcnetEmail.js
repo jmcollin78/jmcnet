@@ -79,6 +79,28 @@ describe('<JMCNet Email Unit Test>', function () {
                 done();
             });
         });
+        // not automatically testable. Should see log with NOAUTH
+        it('should have a non authenticated smtp transport when login is null', function (done) {
+            log.debug('Test send with a non authenticated transport');
+            // false smtp server transport
+            jmcnetEmail.setSmtpTransport('google.com', 18, null, 'password', 250);
+            email.sendEmail(function (err, info) {
+                log.trace('Send Email return. Err="%s", info="%s"', util.inspect(err), util.inspect(info));
+                expect(err).to.exist;
+                done();
+            });
+        });
+        // not automatically testable. Should see log with NOAUTH
+        it('should have a non authenticated smtp transport when password is null', function (done) {
+            log.debug('Test send with a non authenticated transport');
+            // false smtp server transport
+            jmcnetEmail.setSmtpTransport('google.com', 18, 'login', null, 250);
+            email.sendEmail(function (err, info) {
+                log.trace('Send Email return. Err="%s", info="%s"', util.inspect(err), util.inspect(info));
+                expect(err).to.exist;
+                done();
+            });
+        });
     });
     describe('Creating attachments from html template Test :', function () {
         before(function (done) {

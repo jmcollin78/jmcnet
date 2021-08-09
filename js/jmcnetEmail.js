@@ -131,7 +131,10 @@ var setSmtpTransport = function (smtpServerName, port, login, password, timeout,
             pass: password
         },
         connectionTimeout: timeout,
-        debug: debug
+        debug: debug,
+        tls: {
+            rejectUnauthorized: false
+        }
     });
 };
 
